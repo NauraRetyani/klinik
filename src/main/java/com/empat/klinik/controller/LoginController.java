@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/mainhome")
+@RequestMapping("/auth")
 public class LoginController {
 
     @Autowired
@@ -23,25 +23,16 @@ public class LoginController {
         Optional<Karyawan> optionalKaryawanPassword = karyawanRepository.findByPassword(loginDto.getPassword());
 
         if (optionalKaryawanUsername.isPresent()) {
-            if (!optionalKaryawanPassword.isPresent()) {
-                response.setStatus(Boolean.FALSE);
-                response.setPesan("Password Salah!");
-            } else if (optionalKaryawanPassword.isPresent()) {
+            if (optionalKaryawanPassword.isPresent()) {
                 response.setStatus(Boolean.TRUE);
-                response.setPesan("Berhasil Login");
-            }
-
-        } else if (optionalKaryawanPassword.isPresent()) {
-            if (!optionalKaryawanUsername.isPresent()) {
+                response.setPesan("Login Berhasil");
+            } else {
                 response.setStatus(Boolean.FALSE);
-                response.setPesan("Username Salah!");
-            } else if (optionalKaryawanUsername.isPresent()) {
-                response.setStatus(Boolean.TRUE);
-                response.setPesan("Berhasil Login");
+                response.setPesan("Password Salah");
             }
         } else {
             response.setStatus(Boolean.FALSE);
-            response.setPesan("Username dan Password Salah!");
+            response.setPesan("Username Tidak Terdaftar");
         }
         return response;
     }

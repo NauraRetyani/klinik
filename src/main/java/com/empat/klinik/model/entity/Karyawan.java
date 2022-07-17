@@ -9,17 +9,40 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "t_karyawan")
 public class Karyawan {
-    @Column(name = "Username")
-    private String username;
-    @Column(name = "Password")
-    private String password;
     @Id
-    @Column(name = "NIK", length = 16)
-    private String nik;
-    @Column(name = "Nama")
+    @Column(name = "nik", length = 16)
+    private Integer nik;
+
+    @Column(name = "nama", length = 30)
     private String nama;
-    @Column(name = "Alamat")
+
+    @Column(name = "username", length = 15, unique = true)
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "no_telp", length = 13)
+    private Integer telp;
+
+    @Column(name = "alamat", length = 50)
     private String alamat;
+
+    public Integer getNik() {
+        return nik;
+    }
+
+    public void setNik(Integer nik) {
+        this.nik = nik;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
 
     public String getUsername() {
         return username;
@@ -37,20 +60,12 @@ public class Karyawan {
         this.password = password;
     }
 
-    public String getNik() {
-        return nik;
+    public Integer getTelp() {
+        return telp;
     }
 
-    public void setNik(String nik) {
-        this.nik = nik;
-    }
-
-    public String getNama() {
-        return nama;
-    }
-
-    public void setNama(String nama) {
-        this.nama = nama;
+    public void setTelp(Integer telp) {
+        this.telp = telp;
     }
 
     public String getAlamat() {
@@ -60,5 +75,4 @@ public class Karyawan {
     public void setAlamat(String alamat) {
         this.alamat = alamat;
     }
-
 }

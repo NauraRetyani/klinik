@@ -1,8 +1,17 @@
 package com.empat.klinik.model.dto;
 
-public class DefaultResponse {
+public class DefaultResponse<T> {
     private Boolean status;
     private String pesan;
+    private T data;
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
 
     public Boolean getStatus() {
         return status;
