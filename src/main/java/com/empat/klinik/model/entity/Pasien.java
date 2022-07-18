@@ -1,18 +1,15 @@
 package com.empat.klinik.model.entity;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "t_pasien")
 public class Pasien {
     @Id
-    @Column(name = "id_pasien", length = 7)
-    private String idPasien;
+    @Column(name = "id_pasien")
+    private Long idPasien;
     @Column
     private String nama;
     @Column
@@ -24,13 +21,20 @@ public class Pasien {
     @Column
     private String alamat;
     @Column(name = "id_pekerjaan")
-    private String idJob;
+    private Integer idJob;
 
-    public String getIdPasien() {
+    @OneToOne
+    @JoinColumn(name = "id_pekerjaan", insertable = false, updatable = false)
+    private Pekerjaan pekerjaan;
+
+    public Pasien() {
+    }
+
+    public Long getIdPasien() {
         return idPasien;
     }
 
-    public void setIdPasien(String idPasien) {
+    public void setIdPasien(Long idPasien) {
         this.idPasien = idPasien;
     }
 
@@ -74,12 +78,21 @@ public class Pasien {
         this.alamat = alamat;
     }
 
-    public String getIdJob() {
+    public Integer getIdJob() {
         return idJob;
     }
 
-    public void setIdJob(String idJob) {
+    public void setIdJob(Integer idJob) {
         this.idJob = idJob;
     }
+
+    public Pekerjaan getPekerjaan() {
+        return pekerjaan;
+    }
+
+    public void setPekerjaan(Pekerjaan pekerjaan) {
+        this.pekerjaan = pekerjaan;
+    }
 }
+
 

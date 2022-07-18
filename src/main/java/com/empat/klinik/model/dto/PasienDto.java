@@ -3,19 +3,18 @@ package com.empat.klinik.model.dto;
 import java.util.Date;
 
 public class PasienDto {
-    private String idPasien;
+    private Long idPasien;
     private String nama;
     private String gender;
     private Date bday;
     private String golDar;
     private String alamat;
-    private String idJob;
 
-    public String getIdPasien() {
+    public Long getIdPasien() {
         return idPasien;
     }
 
-    public void setIdPasien(String idPasien) {
+    public void setIdPasien(Long idPasien) {
         this.idPasien = idPasien;
     }
 
@@ -59,11 +58,4 @@ public class PasienDto {
         this.alamat = alamat;
     }
 
-    public String getIdJob() {
-        return idJob;
-    }
-
-    public void setIdJob(String idJob) {
-        this.idJob = idJob;
-    }
 }

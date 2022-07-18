@@ -2,8 +2,11 @@ package com.empat.klinik.controller;
 
 import com.empat.klinik.model.dto.DefaultResponse;
 import com.empat.klinik.model.dto.PasienDto;
+import com.empat.klinik.model.dto.PekerjaanDto;
 import com.empat.klinik.model.entity.Pasien;
+import com.empat.klinik.model.entity.Pekerjaan;
 import com.empat.klinik.repository.PasienRepository;
+import com.empat.klinik.repository.PekerjaanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +17,14 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/pasien")
 public class PasienController {
-
     @Autowired
     private PasienRepository pasienRepository;
+    private PekerjaanRepository pekerjaanRepository;
+
+//    public PasienController(PasienRepository pasienRepository, PekerjaanRepository pekerjaanRepository) {
+//        this.pasienRepository = pasienRepository;
+//        this.pekerjaanRepository = pekerjaanRepository;
+//    }
 
 
     @GetMapping("/listpasien")
@@ -28,15 +36,15 @@ public class PasienController {
         return list;
     }
 
-    public PasienDto convertEntityToDto(Pasien entity) {
-        PasienDto dto = new PasienDto();
-        dto.setIdPasien(entity.getIdPasien());
-        dto.setNama(entity.getNama());
-        dto.setGender(entity.getGender());
-        dto.setBday(entity.getBday());
-        dto.setGolDar(entity.getGolDar());
-        dto.setAlamat(entity.getAlamat());
-        dto.setIdJob(entity.getIdJob());
+    @GetMapping("/job/{idPasien}")
+    public PekerjaanDto getListPasien(@PathVariable Long idPasien) {
+        Optional<Pasien> optionalPasien = pasienRepository.findById(idPasien);
+        PekerjaanDto dto = new PekerjaanDto();
+        if (optionalPasien.isPresent()) {
+            Pasien pasien = optionalPasien.get();
+            dto.setNama(pasien.getNama());
+            dto.setNamaJob(pasien.getPekerjaan().getNamaJob());
+        }
         return dto;
     }
 
@@ -44,7 +52,7 @@ public class PasienController {
     public DefaultResponse<PasienDto> savePasien(@RequestBody PasienDto pasienDto) {
         Pasien pasien = convertDtoToEntity(pasienDto);
         DefaultResponse<PasienDto> df = new DefaultResponse<>();
-        Optional<Pasien> optionalIdPasien = pasienRepository.findByIdPasien(pasienDto.getNama());
+        Optional<Pasien> optionalIdPasien = pasienRepository.findById(pasienDto.getIdPasien());
         if (optionalIdPasien.isPresent()) {
             df.setStatus(Boolean.FALSE);
             df.setPesan("data gagal disimpan, pasien sudah terdaftar");
@@ -57,6 +65,17 @@ public class PasienController {
         return df;
     }
 
+    public PasienDto convertEntityToDto(Pasien entity) {
+        PasienDto dto = new PasienDto();
+        dto.setIdPasien(entity.getIdPasien());
+        dto.setNama(entity.getNama());
+        dto.setGender(entity.getGender());
+        dto.setBday(entity.getBday());
+        dto.setGolDar(entity.getGolDar());
+        dto.setAlamat(entity.getAlamat());
+        return dto;
+    }
+
     public Pasien convertDtoToEntity(PasienDto pasienDto) {
         Pasien pasien = new Pasien();
 
@@ -66,7 +85,6 @@ public class PasienController {
         pasien.setBday(pasienDto.getBday());
         pasien.setGolDar(pasienDto.getGolDar());
         pasien.setAlamat(pasienDto.getAlamat());
-        pasien.setIdJob(pasienDto.getIdJob());
 
         return pasien;
     }
