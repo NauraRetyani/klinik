@@ -18,7 +18,7 @@ public class IcdxController {
     @Autowired
     private IcdxRepository icdxRepository;
 
-    @GetMapping("/getdata")
+    @GetMapping("/listicdx")
     public List<IcdxDto> getListIcdx() {
         List<IcdxDto> list = new ArrayList();
         for (Icdx i : icdxRepository.findAll()) {
@@ -40,7 +40,7 @@ public class IcdxController {
         Optional<Icdx> optionalKdIcdx = icdxRepository.findByKdIcdx(icdxDto.getKdIcdx());
         if (optionalKdIcdx.isPresent()) {
             df.setStatus(Boolean.FALSE);
-            df.setPesan("Data gagal disimpan, No RM sudah terdaftar");
+            df.setPesan("Data gagal disimpan, kode Icdx sudah terdaftar");
         } else {
             icdxRepository.save(icdx);
             df.setStatus(Boolean.TRUE);
@@ -54,9 +54,27 @@ public class IcdxController {
         Icdx icdx = new Icdx();
         icdx.setKdIcdx(icdxDto.getKdIcdx());
         icdx.setNamaIcdx(icdxDto.getNamaIcdx());
-
         return icdx;
     }
+
+    @DeleteMapping("/delete/{kd_icdx}")
+    public DefaultResponse deletById(@PathVariable("kd_icdx") String kd_icdx) {
+        DefaultResponse df = new DefaultResponse();
+        try {
+            icdxRepository.deleteById(kd_icdx);
+            df.setStatus(Boolean.TRUE);
+            df.setPesan("Data Berhasil Dihapus");
+        } catch (Exception e) {
+            df.setStatus(Boolean.FALSE);
+            df.setPesan("Data Gagal Dihapus");
+        }
+        return df;
+
+    }
+
+
+
+
 
 
 }
