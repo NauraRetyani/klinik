@@ -19,7 +19,7 @@ public class PemesananController {
     @Autowired
     private PemesananRepository pemesananRepository;
 
-    @GetMapping("/listPemesanan")
+    @GetMapping("/listpemesanan")
     public List<PemesananDto> getListPemesanan() {
         List<PemesananDto> list = new ArrayList();
         for (Pemesanan i : pemesananRepository.findAll()) {

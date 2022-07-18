@@ -19,7 +19,7 @@ public class PasienController {
     private PasienRepository pasienRepository;
 
 
-    @GetMapping("/listPasien")
+    @GetMapping("/listpasien")
     public List<PasienDto> getListPasien() {
         List<PasienDto> list = new ArrayList();
         for (Pasien i : pasienRepository.findAll()) {
