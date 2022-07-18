@@ -61,7 +61,7 @@ public class IcdxController {
     public DefaultResponse deletById(@PathVariable("kd_icdx") String kd_icdx) {
         DefaultResponse df = new DefaultResponse();
         try {
-            icdxRepository.deleteById(kd_icdx);
+            icdxRepository.deleteByKdIcdx(kd_icdx);
             df.setStatus(Boolean.TRUE);
             df.setPesan("Data Berhasil Dihapus");
         } catch (Exception e) {
@@ -69,8 +69,28 @@ public class IcdxController {
             df.setPesan("Data Gagal Dihapus");
         }
         return df;
-
     }
+
+//    ERROR
+    @PutMapping("/update/{kd_icdx}")
+    public DefaultResponse update(@PathVariable("kd_icdx") String kd_icdx, @RequestBody IcdxDto icdxDto) {
+        DefaultResponse df = new DefaultResponse();
+        Optional<Icdx> optionalKdIcdx = icdxRepository.findByKdIcdx(icdxDto.getKdIcdx());
+        Icdx icdx = optionalKdIcdx.get();
+        if (optionalKdIcdx.isPresent()) {
+            df.setStatus(Boolean.FALSE);
+            df.setPesan("Kode Icdx Sudah Terdaftar");
+        } else {
+            icdx.setKdIcdx(icdxDto.getKdIcdx());
+            icdx.setNamaIcdx(icdxDto.getNamaIcdx());
+            icdxRepository.save(icdx);
+            df.setStatus(Boolean.TRUE);
+            df.setData(icdxDto);
+            df.setPesan("Data Berhasil Disimpan");
+        }
+        return df;
+    }
+
 
 
 
