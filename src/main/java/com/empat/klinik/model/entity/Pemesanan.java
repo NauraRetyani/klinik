@@ -5,34 +5,23 @@ import javax.persistence.*;
 @Entity
 @Table(name = "t_pemesanan")
 public class Pemesanan {
-    @Column
-    private String noAntrian;
     @Id
-    @Column
-    private String idPasien;
-    @Column
-    private String namaPasien; //Nanti nama pasien ini menurut saya di join dari tabel pasien aja
-    @Column
-    private String idPenyakit;
+    @Column (name = "no_antrian")
+    private String noAntrian;
 
+    @Column(name = "id_pasien")
+    private String idPasien;
     @OneToOne
-    @JoinColumn (referencedColumnName = "nama_icdx")
+    @JoinColumn(name ="id_pasien", insertable = false, updatable = false)
+    private Pasien pasien;
+    @Column(name = "id_penyakit")
+    private String kdIcdx;
+    @OneToOne
+    @JoinColumn(name ="id_penyakit", insertable = false, updatable = false)
     private Icdx icdx;
 
-    public Icdx getIcdx() {
-        return icdx;
-    }
-
-    public void setIcdx(Icdx icdx) {
-        this.icdx = icdx;
-    }
-
-    @Column
-    private String idKaryawan;
-    @Column
+    @Column (name = "id_status_pelayanan")
     private String statusPelayanan;
-
-
 
     public String getNoAntrian() {
         return noAntrian;
@@ -50,28 +39,12 @@ public class Pemesanan {
         this.idPasien = idPasien;
     }
 
-    public String getNamaPasien() {
-        return namaPasien;
+    public String getKdIcdx() {
+        return kdIcdx;
     }
 
-    public void setNamaPasien(String namaPasien) {
-        this.namaPasien = namaPasien;
-    }
-
-    public String getIdPenyakit() {
-        return idPenyakit;
-    }
-
-    public void setIdPenyakit(String idPenyakit) {
-        this.idPenyakit = idPenyakit;
-    }
-
-    public String getIdKaryawan() {
-        return idKaryawan;
-    }
-
-    public void setIdKaryawan(String idKaryawan) {
-        this.idKaryawan = idKaryawan;
+    public void setKdIcdx(String kdIcdx) {
+        this.kdIcdx = kdIcdx;
     }
 
     public String getStatusPelayanan() {
@@ -80,5 +53,21 @@ public class Pemesanan {
 
     public void setStatusPelayanan(String statusPelayanan) {
         this.statusPelayanan = statusPelayanan;
+    }
+
+    public Pasien getPasien() {
+        return pasien;
+    }
+
+    public void setPasien(Pasien pasien) {
+        this.pasien = pasien;
+    }
+
+    public Icdx getIcdx() {
+        return icdx;
+    }
+
+    public void setIcdx(Icdx icdx) {
+        this.icdx = icdx;
     }
 }
