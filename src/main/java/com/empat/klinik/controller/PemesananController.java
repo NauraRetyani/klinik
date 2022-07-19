@@ -2,6 +2,7 @@ package com.empat.klinik.controller;
 
 import com.empat.klinik.model.dto.DefaultResponse;
 //import com.empat.klinik.model.dto.IcdxDto;
+import com.empat.klinik.model.dto.IcdxDto;
 import com.empat.klinik.model.dto.PemesananDetailDto;
 import com.empat.klinik.model.dto.PemesananDto;
 //import com.empat.klinik.model.entity.Icdx;
@@ -50,13 +51,19 @@ public class PemesananController {
             dto.setNoAntrian(pemesanan1.getNoAntrian());
             dto.setNama(pemesanan1.getPasien().getNama());
             dto.setNamaIcdx(pemesanan1.getIcdx().getNamaIcdx());
+            dto.setStatusPelayanan(pemesanan1.getStatusPelayanan());
+            if((pemesanan1.getStatusPelayanan()).equals("0")){
+                dto.setStatusPelayanan("Belum Dilayani");
+            }else if((pemesanan1.getStatusPelayanan()).equals("1")){
+                dto.setStatusPelayanan("Sudah Dilayani");
+            }else{
+                dto.setStatusPelayanan("Kode Status Tidak Valid");
+            }
         }
-        dto.setStatusPelayanan("Belum Dilayani");
 
         return dto;
 
     }
-
 
     //Fitur tambah data
     @PostMapping("/savedata")
@@ -99,6 +106,26 @@ public class PemesananController {
         } else {
             df.setStatus(Boolean.FALSE);
             df.setPesan("Data Tidak Ditemukan");
+        }
+        return df;
+    }
+
+    //Subfitur Update atau Edit
+    @PutMapping("/update/{noAntrian}")
+    public DefaultResponse update(@PathVariable String noAntrian, @RequestBody PemesananDto pemesananDto) {
+        DefaultResponse df = new DefaultResponse();
+        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByNoAntrian(noAntrian);
+        Pemesanan pemesanan = optionalPemesanan.get();
+        if (optionalPemesanan.isPresent()) {
+            //pemesanan.setNoAntrian(pemesananDto.getNoAntrian());
+            pemesanan.setStatusPelayanan(pemesananDto.getStatusPelayanan());
+            pemesananRepository.save(pemesanan);
+            df.setStatus(Boolean.TRUE);
+            df.setData(pemesananDto);
+            df.setPesan("Data Perubahan Berhasil Disimpan");
+        } else {
+            df.setStatus(Boolean.FALSE);
+            df.setPesan("No Antrian Tidak Ditemukan");
         }
         return df;
     }

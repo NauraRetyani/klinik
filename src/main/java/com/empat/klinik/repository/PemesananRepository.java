@@ -11,7 +11,9 @@ public interface PemesananRepository extends JpaRepository<Pemesanan, String> {
     Optional<Pemesanan> findByIdPasien(String idPasien);
     Optional<Pemesanan> findByKdIcdx(String kdIcdx);
 
-    void deleteByIdPasien(String id_pasien);
+    //void deleteByIdPasien(String id_pasien);
+
+    Optional<Pemesanan> findByNoAntrian(String noAntrian);
 
     //Optional<Pemesanan> deleteByIdPasien(String idPasien);
     //Optional<Pemesanan> findByNik(String nik);
