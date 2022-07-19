@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PasienRepository extends JpaRepository<Pasien, Long> {
-    Optional<Pasien> findByIdPasien(String idPasien);
-
     List<Pasien> findAllByNama(String idPasien);
 
 }
