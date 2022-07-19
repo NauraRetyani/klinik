@@ -43,9 +43,9 @@ public class PemesananController {
     }
 
     public PemesananDetailDto convertEntityToDto(Pemesanan entity1) {
-        Optional <Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasienAndKdIcdx(entity1.getIdPasien(), entity1.getKdIcdx());
+        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasienAndKdIcdx(entity1.getIdPasien(), entity1.getKdIcdx());
         PemesananDetailDto dto = new PemesananDetailDto();
-        if(optionalPemesanan.isPresent()){
+        if (optionalPemesanan.isPresent()) {
             Pemesanan pemesanan1 = optionalPemesanan.get();
             dto.setNoAntrian(pemesanan1.getNoAntrian());
             dto.setNama(pemesanan1.getPasien().getNama());
@@ -87,18 +87,18 @@ public class PemesananController {
         return pemesanan;
     }
 
-    //Delete Data
-    //Masih error
-    @DeleteMapping("/delete/{id_pasien}")
-    public DefaultResponse deletById(@PathVariable("id_pasien") String id_pasien) {
+    //Sub Fitur Delete Data
+    @DeleteMapping("/delete/{idPasien}")
+    public DefaultResponse deletById(@PathVariable String idPasien) {
         DefaultResponse df = new DefaultResponse();
-        try {
-            pemesananRepository.deleteByIdPasien(id_pasien);
+        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasien(idPasien);
+        if (optionalPemesanan.isPresent()) {
+            pemesananRepository.delete(optionalPemesanan.get());
             df.setStatus(Boolean.TRUE);
             df.setPesan("Data Berhasil Dihapus");
-        } catch (Exception e) {
+        } else {
             df.setStatus(Boolean.FALSE);
-            df.setPesan("Data Gagal Dihapus");
+            df.setPesan("Data Tidak Ditemukan");
         }
         return df;
     }
