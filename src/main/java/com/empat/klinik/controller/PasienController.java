@@ -4,7 +4,6 @@ import com.empat.klinik.model.dto.DefaultResponse;
 import com.empat.klinik.model.dto.PasienDto;
 import com.empat.klinik.model.dto.PekerjaanDto;
 import com.empat.klinik.model.entity.Pasien;
-import com.empat.klinik.model.entity.Pekerjaan;
 import com.empat.klinik.repository.PasienRepository;
 import com.empat.klinik.repository.PekerjaanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +20,6 @@ public class PasienController {
     private PasienRepository pasienRepository;
     private PekerjaanRepository pekerjaanRepository;
 
-//    public PasienController(PasienRepository pasienRepository, PekerjaanRepository pekerjaanRepository) {
-//        this.pasienRepository = pasienRepository;
-//        this.pekerjaanRepository = pekerjaanRepository;
-//    }
-
-
     @GetMapping("/listpasien")
     public List<PasienDto> getListPasien() {
         List<PasienDto> list = new ArrayList();
@@ -37,11 +30,12 @@ public class PasienController {
     }
 
     @GetMapping("/job/{idPasien}")
-    public PekerjaanDto getListPasien(@PathVariable Long idPasien) {
+    public PekerjaanDto getListPasien(@PathVariable Integer idPasien) {
         Optional<Pasien> optionalPasien = pasienRepository.findById(idPasien);
         PekerjaanDto dto = new PekerjaanDto();
         if (optionalPasien.isPresent()) {
             Pasien pasien = optionalPasien.get();
+            dto.setIdPasien(pasien.getIdPasien());
             dto.setNama(pasien.getNama());
             dto.setNamaJob(pasien.getPekerjaan().getNamaJob());
         }
@@ -65,6 +59,21 @@ public class PasienController {
         return df;
     }
 
+    @DeleteMapping("/delete/{idPasien}")
+    public DefaultResponse deletById(@PathVariable Integer idPasien) {
+        DefaultResponse df = new DefaultResponse();
+        Optional<Pasien> optionalPasien = pasienRepository.findById(idPasien);
+        if (optionalPasien.isPresent()) {
+            pasienRepository.delete(optionalPasien.get());
+            df.setStatus(Boolean.TRUE);
+            df.setPesan("Data Berhasil Dihapus");
+        } else {
+            df.setStatus(Boolean.FALSE);
+            df.setPesan("Data Tidak Ditemukan");
+        }
+        return df;
+    }
+
     public PasienDto convertEntityToDto(Pasien entity) {
         PasienDto dto = new PasienDto();
         dto.setIdPasien(entity.getIdPasien());
@@ -73,6 +82,8 @@ public class PasienController {
         dto.setBday(entity.getBday());
         dto.setGolDar(entity.getGolDar());
         dto.setAlamat(entity.getAlamat());
+        dto.setIdJob(entity.getIdJob());
+
         return dto;
     }
 
@@ -85,6 +96,7 @@ public class PasienController {
         pasien.setBday(pasienDto.getBday());
         pasien.setGolDar(pasienDto.getGolDar());
         pasien.setAlamat(pasienDto.getAlamat());
+        pasien.setIdJob(pasienDto.getIdJob());
 
         return pasien;
     }

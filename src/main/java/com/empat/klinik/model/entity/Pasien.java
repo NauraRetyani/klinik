@@ -8,12 +8,14 @@ import java.util.Date;
 @Table(name = "t_pasien")
 public class Pasien {
     @Id
-    @Column(name = "id_pasien")
-    private Long idPasien;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_pasien")
+    @Column(name = "id_pasien", length = 6)
+    private Integer idPasien;
     @Column
     private String nama;
     @Column
     private String gender;
+    @Temporal(TemporalType.DATE)
     @Column
     private Date bday;
     @Column(name = "gol_darah")
@@ -30,11 +32,11 @@ public class Pasien {
     public Pasien() {
     }
 
-    public Long getIdPasien() {
+    public Integer getIdPasien() {
         return idPasien;
     }
 
-    public void setIdPasien(Long idPasien) {
+    public void setIdPasien(Integer idPasien) {
         this.idPasien = idPasien;
     }
 
@@ -94,5 +96,3 @@ public class Pasien {
         this.pekerjaan = pekerjaan;
     }
 }
-
-
