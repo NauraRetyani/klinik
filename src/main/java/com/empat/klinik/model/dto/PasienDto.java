@@ -1,20 +1,32 @@
 package com.empat.klinik.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class PasienDto {
-    private Long idPasien;
+    private String idPasien;
     private String nama;
     private String gender;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date bday;
     private String golDar;
     private String alamat;
+    private String idJob;
 
-    public Long getIdPasien() {
+    public String getIdJob() {
+        return idJob;
+    }
+
+    public void setIdJob(String idJob) {
+        this.idJob = idJob;
+    }
+
+    public String getIdPasien() {
         return idPasien;
     }
 
-    public void setIdPasien(Long idPasien) {
+    public void setIdPasien(String idPasien) {
         this.idPasien = idPasien;
     }
 

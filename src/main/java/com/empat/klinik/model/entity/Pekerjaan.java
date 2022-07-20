@@ -10,15 +10,15 @@ import javax.persistence.Table;
 public class Pekerjaan {
     @Id
     @Column(name = "id_pekerjaan")
-    private Integer idJob;
+    private String idJob;
     @Column(name = "nama_pekerjaan")
     private String namaJob;
 
-    public Integer getIdJob() {
+    public String getIdJob() {
         return idJob;
     }
 
-    public void setIdJob(Integer idJob) {
+    public void setIdJob(String idJob) {
         this.idJob = idJob;
     }
 

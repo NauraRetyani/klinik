@@ -9,11 +9,12 @@ import java.util.Date;
 public class Pasien {
     @Id
     @Column(name = "id_pasien")
-    private Long idPasien;
+    private String idPasien;
     @Column
     private String nama;
     @Column
     private String gender;
+    @Temporal(TemporalType.DATE)
     @Column
     private Date bday;
     @Column(name = "gol_darah")
@@ -21,7 +22,7 @@ public class Pasien {
     @Column
     private String alamat;
     @Column(name = "id_pekerjaan")
-    private Integer idJob;
+    private String idJob;
 
     @OneToOne
     @JoinColumn(name = "id_pekerjaan", insertable = false, updatable = false)
@@ -30,11 +31,11 @@ public class Pasien {
     public Pasien() {
     }
 
-    public Long getIdPasien() {
+    public String getIdPasien() {
         return idPasien;
     }
 
-    public void setIdPasien(Long idPasien) {
+    public void setIdPasien(String idPasien) {
         this.idPasien = idPasien;
     }
 
@@ -78,11 +79,11 @@ public class Pasien {
         this.alamat = alamat;
     }
 
-    public Integer getIdJob() {
+    public String getIdJob() {
         return idJob;
     }
 
-    public void setIdJob(Integer idJob) {
+    public void setIdJob(String idJob) {
         this.idJob = idJob;
     }
 
@@ -94,5 +95,3 @@ public class Pasien {
         this.pekerjaan = pekerjaan;
     }
 }
-
-

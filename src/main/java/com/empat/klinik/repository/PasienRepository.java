@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface PasienRepository extends JpaRepository<Pasien, Long> {
+public interface PasienRepository extends JpaRepository<Pasien, String> {
     List<Pasien> findAllByNama(String idPasien);
 
 }
