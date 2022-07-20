@@ -66,8 +66,8 @@ public class IcdxController {
     @DeleteMapping("/delete/{kd_icdx}")
     public DefaultResponse deleteById(@PathVariable("kd_icdx") String kdIcdx) {
         DefaultResponse df = new DefaultResponse();
-        Optional<Icdx> optionalIcdx =icdxRepository.findById(kdIcdx);
-        if (optionalIcdx.isPresent()){
+        Optional<Icdx> optionalIcdx = icdxRepository.findById(kdIcdx);
+        if (optionalIcdx.isPresent()) {
             icdxRepository.delete(optionalIcdx.get());
             df.setStatus(Boolean.TRUE);
             df.setPesan("Data Berhasil Dihapus");
@@ -86,7 +86,6 @@ public class IcdxController {
         return df;
     }
 
-//    ERROR
     @PutMapping("/update/{kd_icdx}")
     public DefaultResponse update(@PathVariable("kd_icdx") String kdIcdx, @RequestBody IcdxDto icdxDto) {
         DefaultResponse df = new DefaultResponse();

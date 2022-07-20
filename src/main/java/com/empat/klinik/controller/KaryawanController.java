@@ -10,6 +10,8 @@ import com.empat.klinik.repository.IcdxRepository;
 import com.empat.klinik.repository.KaryawanRepository;
 import com.empat.klinik.repository.PasienRepository;
 import com.empat.klinik.repository.PemesananRepository;
+import com.empat.klinik.model.entity.Karyawan;
+import com.empat.klinik.repository.KaryawanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
 @RequestMapping("/karyawan")
 public class KaryawanController {
+
     @Autowired
     private KaryawanRepository karyawanRepository;
 
@@ -133,5 +137,6 @@ public class KaryawanController {
             df.setPesan("NIK Tidak Ditemukan");
         }
         return df;
+
     }
 }
