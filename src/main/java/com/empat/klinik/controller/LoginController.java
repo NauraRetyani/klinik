@@ -37,20 +37,6 @@ public class LoginController {
         return response;
     }
 
-    /*Cek karyawan berdasarkan NIK*/
-    //need rev//
-    @GetMapping("/byid/{nik}")
-    public DefaultResponse getByIdKaryawan(@PathVariable String nik) {
-        DefaultResponse df = new DefaultResponse();
-        Optional<Karyawan> namaKaryawan = karyawanRepository.findById(nik);
-        if (namaKaryawan.isPresent()) {
-            df.setStatus(Boolean.TRUE);
-            df.setPesan("Data Ditemukan");
-        } else {
-            df.setStatus(Boolean.FALSE);
-            df.setPesan("Data Tidak Ada");
-        }
-        return df;
-    }
+
 }
 

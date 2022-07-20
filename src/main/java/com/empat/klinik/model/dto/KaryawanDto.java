@@ -1,31 +1,12 @@
-package com.empat.klinik.model.entity;
+package com.empat.klinik.model.dto;
 
+public class KaryawanDto {
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "t_karyawan")
-public class Karyawan {
-    @Id
-    @Column(name = "nik", length = 16)
     private String nik;
-
-    @Column(name = "nama", length = 30)
     private String namaKaryawan;
-
-    @Column(name = "username", length = 15, unique = true)
     private String username;
-
-    @Column(name = "password")
     private String password;
-
-    @Column(name = "no_telp", length = 13)
     private Integer telp;
-
-    @Column(name = "alamat", length = 50)
     private String alamat;
 
     public String getNik() {

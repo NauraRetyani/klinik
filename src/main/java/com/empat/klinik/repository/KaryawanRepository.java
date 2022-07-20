@@ -9,4 +9,7 @@ public interface KaryawanRepository extends JpaRepository<Karyawan, String> {
     Optional<Karyawan> findByUsername(String username);
 
     Optional<Karyawan> findByPassword(String password);
+
+    @Override
+    Optional<Karyawan> findById(String nik);
 }
