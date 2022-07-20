@@ -1,16 +1,24 @@
 package com.empat.klinik.model.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "t_pemesanan")
 public class Pemesanan {
-    @Id
-    @Column (name = "no_antrian")
-    private String noAntrian;
 
-    @Column(name = "id_pasien")
-    private String idPasien;
+    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "seq_antrian")
+    @Column (name = "no_antrian")
+    private Integer noAntrian;
+
+    @Id
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_pasien")
+    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "seq_pemesanan")
+    @Column (name = "id_pemesanan")
+    private Integer idPemesanan;
+
+    @Column(name = "id_pasien", length = 6)
+    private Integer idPasien;
     @OneToOne
     @JoinColumn(name ="id_pasien", insertable = false, updatable = false)
     private Pasien pasien;
@@ -20,22 +28,36 @@ public class Pemesanan {
     @JoinColumn(name ="id_penyakit", insertable = false, updatable = false)
     private Icdx icdx;
 
+    @Column(name = "nik_karyawan")
+    private Long nik;
+    @OneToOne
+    @JoinColumn(name ="nik_karyawan", insertable = false, updatable = false)
+    private Karyawan karyawan;
+
     @Column (name = "id_status_pelayanan")
     private String statusPelayanan;
 
-    public String getNoAntrian() {
+    public Integer getNoAntrian() {
         return noAntrian;
     }
 
-    public void setNoAntrian(String noAntrian) {
+    public void setNoAntrian(Integer noAntrian) {
         this.noAntrian = noAntrian;
     }
 
-    public String getIdPasien() {
+    public Integer getIdPemesanan() {
+        return idPemesanan;
+    }
+
+    public void setIdPemesanan(Integer idPemesanan) {
+        this.idPemesanan = idPemesanan;
+    }
+
+    public Integer getIdPasien() {
         return idPasien;
     }
 
-    public void setIdPasien(String idPasien) {
+    public void setIdPasien(Integer idPasien) {
         this.idPasien = idPasien;
     }
 
@@ -69,5 +91,21 @@ public class Pemesanan {
 
     public void setIcdx(Icdx icdx) {
         this.icdx = icdx;
+    }
+
+    public Long getNik() {
+        return nik;
+    }
+
+    public void setNik(Long nik) {
+        this.nik = nik;
+    }
+
+    public Karyawan getKaryawan() {
+        return karyawan;
+    }
+
+    public void setKaryawan(Karyawan karyawan) {
+        this.karyawan = karyawan;
     }
 }

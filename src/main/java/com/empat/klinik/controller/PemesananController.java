@@ -44,13 +44,14 @@ public class PemesananController {
     }
 
     public PemesananDetailDto convertEntityToDto(Pemesanan entity1) {
-        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasienAndKdIcdx(entity1.getIdPasien(), entity1.getKdIcdx());
+        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasienAndKdIcdxAndNik(entity1.getIdPasien(), entity1.getKdIcdx(), entity1.getNik());
         PemesananDetailDto dto = new PemesananDetailDto();
         if (optionalPemesanan.isPresent()) {
             Pemesanan pemesanan1 = optionalPemesanan.get();
             dto.setNoAntrian(pemesanan1.getNoAntrian());
             dto.setNama(pemesanan1.getPasien().getNama());
             dto.setNamaIcdx(pemesanan1.getIcdx().getNamaIcdx());
+            dto.setNamaKaryawan(pemesanan1.getKaryawan().getNamaKaryawan());
             dto.setStatusPelayanan(pemesanan1.getStatusPelayanan());
             if((pemesanan1.getStatusPelayanan()).equals("0")){
                 dto.setStatusPelayanan("Belum Dilayani");
@@ -88,7 +89,7 @@ public class PemesananController {
         pemesanan.setNoAntrian(pemesananDto.getNoAntrian());
         pemesanan.setIdPasien(pemesananDto.getIdPasien());
         pemesanan.setKdIcdx(pemesananDto.getKdIcdx());
-        //pemesanan.setNik(pemesananDto.getIdKaryawan());
+        pemesanan.setNik(pemesananDto.getNik());
         pemesanan.setStatusPelayanan(pemesananDto.getStatusPelayanan());
 
         return pemesanan;
@@ -96,7 +97,7 @@ public class PemesananController {
 
     //Sub Fitur Delete Data
     @DeleteMapping("/delete/{idPasien}")
-    public DefaultResponse deletById(@PathVariable String idPasien) {
+    public DefaultResponse deletById(@PathVariable Integer idPasien) {
         DefaultResponse df = new DefaultResponse();
         Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasien(idPasien);
         if (optionalPemesanan.isPresent()) {
@@ -112,7 +113,7 @@ public class PemesananController {
 
     //Subfitur Update atau Edit
     @PutMapping("/update/{noAntrian}")
-    public DefaultResponse update(@PathVariable String noAntrian, @RequestBody PemesananDto pemesananDto) {
+    public DefaultResponse update(@PathVariable Integer noAntrian, @RequestBody PemesananDto pemesananDto) {
         DefaultResponse df = new DefaultResponse();
         Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByNoAntrian(noAntrian);
         Pemesanan pemesanan = optionalPemesanan.get();

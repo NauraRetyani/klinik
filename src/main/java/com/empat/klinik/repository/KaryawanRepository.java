@@ -5,11 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface KaryawanRepository extends JpaRepository<Karyawan, String> {
+public interface KaryawanRepository extends JpaRepository<Karyawan, Long> {
     Optional<Karyawan> findByUsername(String username);
 
     Optional<Karyawan> findByPassword(String password);
 
     @Override
-    Optional<Karyawan> findById(String nik);
+    Optional<Karyawan> findById(Long nik);
 }

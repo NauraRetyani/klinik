@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class Karyawan {
     @Id
     @Column(name = "nik", length = 16)
-    private String nik;
+    private Long nik;
 
     @Column(name = "nama", length = 30)
     private String namaKaryawan;
@@ -23,16 +23,16 @@ public class Karyawan {
     private String password;
 
     @Column(name = "no_telp", length = 13)
-    private Integer telp;
+    private Long telp;
 
     @Column(name = "alamat", length = 50)
     private String alamat;
 
-    public String getNik() {
+    public Long getNik() {
         return nik;
     }
 
-    public void setNik(String nik) {
+    public void setNik(Long nik) {
         this.nik = nik;
     }
 
@@ -60,11 +60,11 @@ public class Karyawan {
         this.password = password;
     }
 
-    public Integer getTelp() {
+    public Long getTelp() {
         return telp;
     }
 
-    public void setTelp(Integer telp) {
+    public void setTelp(Long telp) {
         this.telp = telp;
     }
 

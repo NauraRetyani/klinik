@@ -1,26 +1,36 @@
 package com.empat.klinik.model.dto;
 
 public class PemesananDto {
-    private String noAntrian;
-    private String idPasien;
+    private Integer noAntrian;
+    private Integer idPemesanan;
+    private Integer idPasien;
     private String kdIcdx;
+    private Long nik;
     //private String idKaryawan;
     private String statusPelayanan;
     //private String namaPasien;
 
-    public String getNoAntrian() {
+    public Integer getNoAntrian() {
         return noAntrian;
     }
 
-    public void setNoAntrian(String noAntrian) {
+    public void setNoAntrian(Integer noAntrian) {
         this.noAntrian = noAntrian;
     }
 
-    public String getIdPasien() {
+    public Integer getIdPemesanan() {
+        return idPemesanan;
+    }
+
+    public void setIdPemesanan(Integer idPemesanan) {
+        this.idPemesanan = idPemesanan;
+    }
+
+    public Integer getIdPasien() {
         return idPasien;
     }
 
-    public void setIdPasien(String idPasien) {
+    public void setIdPasien(Integer idPasien) {
         this.idPasien = idPasien;
     }
 
@@ -30,6 +40,14 @@ public class PemesananDto {
 
     public void setKdIcdx(String kdIcdx) {
         this.kdIcdx = kdIcdx;
+    }
+
+    public Long getNik() {
+        return nik;
+    }
+
+    public void setNik(Long nik) {
+        this.nik = nik;
     }
 
     public String getStatusPelayanan() {

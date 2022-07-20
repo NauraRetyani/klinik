@@ -53,7 +53,7 @@ public class KaryawanController {
     //Sub fitur cek karyawan (Pencarian Karyawan Berdasarkan Nik)
     //need rev//
     @GetMapping("/byid/{nik}")
-    public DefaultResponse getByIdKaryawan(@PathVariable String nik) {
+    public DefaultResponse getByIdKaryawan(@PathVariable Long nik) {
         DefaultResponse df = new DefaultResponse();
         Optional<Karyawan> namaKaryawan = karyawanRepository.findById(nik);
         if (namaKaryawan.isPresent()) {
@@ -98,7 +98,7 @@ public class KaryawanController {
 
     //Sub Fitur Delete Data
     @DeleteMapping("/delete/{nik}")
-    public DefaultResponse deletById(@PathVariable String  nik) {
+    public DefaultResponse deletById(@PathVariable Long nik) {
         DefaultResponse df = new DefaultResponse();
         Optional<Karyawan> optionalKaryawan = karyawanRepository.findById(nik);
         if (optionalKaryawan.isPresent()) {
@@ -114,7 +114,7 @@ public class KaryawanController {
 
     //Subfitur Update atau Edit
     @PutMapping("/update/{nik}")
-    public DefaultResponse update(@PathVariable String nik, @RequestBody KaryawanDto karyawanDto) {
+    public DefaultResponse update(@PathVariable Long nik, @RequestBody KaryawanDto karyawanDto) {
         DefaultResponse df = new DefaultResponse();
         Optional<Karyawan> optionalKaryawan = karyawanRepository.findById(nik);
         Karyawan karyawan = optionalKaryawan.get();
