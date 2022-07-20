@@ -5,28 +5,28 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 public class PasienDto {
-    private String idPasien;
+    private Integer idPasien;
     private String nama;
     private String gender;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date bday;
     private String golDar;
     private String alamat;
-    private String idJob;
+    private Integer idJob;
 
-    public String getIdJob() {
+    public Integer getIdJob() {
         return idJob;
     }
 
-    public void setIdJob(String idJob) {
+    public void setIdJob(Integer idJob) {
         this.idJob = idJob;
     }
 
-    public String getIdPasien() {
+    public Integer getIdPasien() {
         return idPasien;
     }
 
-    public void setIdPasien(String idPasien) {
+    public void setIdPasien(Integer idPasien) {
         this.idPasien = idPasien;
     }
 

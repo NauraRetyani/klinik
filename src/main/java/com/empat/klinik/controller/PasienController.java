@@ -4,7 +4,6 @@ import com.empat.klinik.model.dto.DefaultResponse;
 import com.empat.klinik.model.dto.PasienDto;
 import com.empat.klinik.model.dto.PekerjaanDto;
 import com.empat.klinik.model.entity.Pasien;
-import com.empat.klinik.model.entity.Pemesanan;
 import com.empat.klinik.repository.PasienRepository;
 import com.empat.klinik.repository.PekerjaanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class PasienController {
     }
 
     @GetMapping("/job/{idPasien}")
-    public PekerjaanDto getListPasien(@PathVariable String idPasien) {
+    public PekerjaanDto getListPasien(@PathVariable Integer idPasien) {
         Optional<Pasien> optionalPasien = pasienRepository.findById(idPasien);
         PekerjaanDto dto = new PekerjaanDto();
         if (optionalPasien.isPresent()) {
@@ -61,7 +60,7 @@ public class PasienController {
     }
 
     @DeleteMapping("/delete/{idPasien}")
-    public DefaultResponse deletById(@PathVariable String idPasien) {
+    public DefaultResponse deletById(@PathVariable Integer idPasien) {
         DefaultResponse df = new DefaultResponse();
         Optional<Pasien> optionalPasien = pasienRepository.findById(idPasien);
         if (optionalPasien.isPresent()) {

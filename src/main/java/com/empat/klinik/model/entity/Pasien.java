@@ -8,8 +8,9 @@ import java.util.Date;
 @Table(name = "t_pasien")
 public class Pasien {
     @Id
-    @Column(name = "id_pasien")
-    private String idPasien;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_pasien")
+    @Column(name = "id_pasien", length = 6)
+    private Integer idPasien;
     @Column
     private String nama;
     @Column
@@ -22,7 +23,7 @@ public class Pasien {
     @Column
     private String alamat;
     @Column(name = "id_pekerjaan")
-    private String idJob;
+    private Integer idJob;
 
     @OneToOne
     @JoinColumn(name = "id_pekerjaan", insertable = false, updatable = false)
@@ -31,11 +32,11 @@ public class Pasien {
     public Pasien() {
     }
 
-    public String getIdPasien() {
+    public Integer getIdPasien() {
         return idPasien;
     }
 
-    public void setIdPasien(String idPasien) {
+    public void setIdPasien(Integer idPasien) {
         this.idPasien = idPasien;
     }
 
@@ -79,11 +80,11 @@ public class Pasien {
         this.alamat = alamat;
     }
 
-    public String getIdJob() {
+    public Integer getIdJob() {
         return idJob;
     }
 
-    public void setIdJob(String idJob) {
+    public void setIdJob(Integer idJob) {
         this.idJob = idJob;
     }
 

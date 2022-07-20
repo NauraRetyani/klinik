@@ -1,16 +1,16 @@
 package com.empat.klinik.model.dto;
 
 public class PekerjaanDto {
-    private String idPasien;
+    private Integer idPasien;
     private String nama;
     private String namaJob;
 
 
-    public String getIdPasien() {
+    public Integer getIdPasien() {
         return idPasien;
     }
 
-    public void setIdPasien(String idPasien) {
+    public void setIdPasien(Integer idPasien) {
         this.idPasien = idPasien;
     }
 
