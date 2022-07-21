@@ -1,5 +1,7 @@
 package com.empat.klinik.model.dto;
 
+import java.util.Date;
+
 public class PemesananDto {
     private Integer noAntrian;
     private Integer idPemesanan;
@@ -8,7 +10,7 @@ public class PemesananDto {
     private Long nik;
     //private String idKaryawan;
     private String statusPelayanan;
-    //private String namaPasien;
+    private Date tanggalPesan;
 
     public Integer getNoAntrian() {
         return noAntrian;
@@ -57,4 +59,13 @@ public class PemesananDto {
     public void setStatusPelayanan(String statusPelayanan) {
         this.statusPelayanan = statusPelayanan;
     }
+
+    public Date getTanggalPesan() {
+        return tanggalPesan;
+    }
+
+    public void setTanggalPesan(Date tanggalPesan) {
+        this.tanggalPesan = tanggalPesan;
+    }
+
 }

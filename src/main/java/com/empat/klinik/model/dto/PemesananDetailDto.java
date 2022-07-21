@@ -1,10 +1,17 @@
 package com.empat.klinik.model.dto;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
+
+
 public class PemesananDetailDto {
+
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "antrian_generator")
+    @SequenceGenerator(name = "antrian_generator", sequenceName = "seq_antrian", initialValue = 1, allocationSize = 1)
     private Integer noAntrian;
     private String nama;
     private String namaIcdx;
-    //private String namaKaryawan;
     private String namaKaryawan;
     private String statusPelayanan;
 

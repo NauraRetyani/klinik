@@ -2,12 +2,9 @@ package com.empat.klinik.controller;
 
 import com.empat.klinik.model.dto.DefaultResponse;
 //import com.empat.klinik.model.dto.IcdxDto;
-import com.empat.klinik.model.dto.IcdxDto;
 import com.empat.klinik.model.dto.PemesananDetailDto;
 import com.empat.klinik.model.dto.PemesananDto;
 //import com.empat.klinik.model.entity.Icdx;
-import com.empat.klinik.model.entity.Icdx;
-import com.empat.klinik.model.entity.Pasien;
 import com.empat.klinik.model.entity.Pemesanan;
 import com.empat.klinik.repository.IcdxRepository;
 import com.empat.klinik.repository.KaryawanRepository;
@@ -16,6 +13,8 @@ import com.empat.klinik.repository.PemesananRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.sql.Date.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +33,13 @@ public class PemesananController {
     private IcdxRepository icdxRepository;
 
     //Tampilan muka fitur Pemesanan
+    @GetMapping("/tanggallayanan")
+    public LocalDate getTanggalPelayanan(){
+        return java.time.LocalDate.now();
+    }
     @GetMapping("/listpemesanan")
     public List<PemesananDetailDto> getListPemesanan() {
+
         List<PemesananDetailDto> list = new ArrayList();
         for (Pemesanan i : pemesananRepository.findAll()) {
             list.add(convertEntityToDto(i));
@@ -43,12 +47,14 @@ public class PemesananController {
         return list;
     }
 
+
+
     public PemesananDetailDto convertEntityToDto(Pemesanan entity1) {
         Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasienAndKdIcdxAndNik(entity1.getIdPasien(), entity1.getKdIcdx(), entity1.getNik());
         PemesananDetailDto dto = new PemesananDetailDto();
         if (optionalPemesanan.isPresent()) {
             Pemesanan pemesanan1 = optionalPemesanan.get();
-            dto.setNoAntrian(pemesanan1.getNoAntrian());
+            dto.setNoAntrian(pemesanan1.getIdPemesanan());
             dto.setNama(pemesanan1.getPasien().getNama());
             dto.setNamaIcdx(pemesanan1.getIcdx().getNamaIcdx());
             dto.setNamaKaryawan(pemesanan1.getKaryawan().getNamaKaryawan());
@@ -86,11 +92,13 @@ public class PemesananController {
 
     public Pemesanan convertDtoToEntity(PemesananDto pemesananDto) {
         Pemesanan pemesanan = new Pemesanan();
-        pemesanan.setNoAntrian(pemesananDto.getNoAntrian());
+        pemesanan.setIdPemesanan(pemesanan.getIdPemesanan());
+        pemesanan.setNoAntrian(pemesanan.getIdPemesanan());
         pemesanan.setIdPasien(pemesananDto.getIdPasien());
         pemesanan.setKdIcdx(pemesananDto.getKdIcdx());
         pemesanan.setNik(pemesananDto.getNik());
         pemesanan.setStatusPelayanan(pemesananDto.getStatusPelayanan());
+        pemesanan.setTanggalPesan(java.time.LocalDate.now());
 
         return pemesanan;
     }

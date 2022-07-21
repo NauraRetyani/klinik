@@ -1,19 +1,20 @@
 package com.empat.klinik.model.entity;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "t_pemesanan")
 public class Pemesanan {
 
-    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "seq_antrian")
+    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "antrian_generator")
+    @SequenceGenerator(name = "antrian_generator",sequenceName = "seq_antrian", initialValue = 1, allocationSize = 1)
     @Column (name = "no_antrian")
     private Integer noAntrian;
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_pasien")
-    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "seq_pemesanan")
+    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "pemesanan_generator")
+    @SequenceGenerator(name = "pemesanan_generator", sequenceName = "seq_pemesanan", initialValue = 1, allocationSize = 1 )
     @Column (name = "id_pemesanan")
     private Integer idPemesanan;
 
@@ -36,6 +37,9 @@ public class Pemesanan {
 
     @Column (name = "id_status_pelayanan")
     private String statusPelayanan;
+
+    @Column(name = "tgl_pemesanan")
+    private LocalDate tanggalPesan;
 
     public Integer getNoAntrian() {
         return noAntrian;
@@ -108,4 +112,13 @@ public class Pemesanan {
     public void setKaryawan(Karyawan karyawan) {
         this.karyawan = karyawan;
     }
+
+    public LocalDate getTanggalPesan() {
+        return tanggalPesan;
+    }
+
+    public void setTanggalPesan(LocalDate tanggalPesan) {
+        this.tanggalPesan = tanggalPesan;
+    }
+
 }
