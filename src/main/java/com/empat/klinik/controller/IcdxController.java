@@ -103,4 +103,14 @@ public class IcdxController {
         }
         return df;
     }
+
+//    Search error 1 result
+    @GetMapping("/search/{search}")
+    public List<IcdxDto> search(@PathVariable String search) {
+        List<IcdxDto> list = new ArrayList();
+        for (Icdx i : icdxRepository.search(search)) {
+            list.add(convertEntityToDto(i));
+        }
+        return list;
+    }
 }

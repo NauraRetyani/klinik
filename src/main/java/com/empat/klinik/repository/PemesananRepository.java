@@ -3,7 +3,9 @@ package com.empat.klinik.repository;
 import com.empat.klinik.model.entity.Icdx;
 import com.empat.klinik.model.entity.Pemesanan;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PemesananRepository extends JpaRepository<Pemesanan, Integer> {
@@ -19,4 +21,7 @@ public interface PemesananRepository extends JpaRepository<Pemesanan, Integer> {
     //Optional<Pemesanan> findByNik(String nik);
 
     //Pemesanan[] findAll();
+
+    @Query(nativeQuery = true, value = "SELECT * FROM tb_pemesanan WHERE id_")
+    List<Pemesanan> findStatusDone();
 }

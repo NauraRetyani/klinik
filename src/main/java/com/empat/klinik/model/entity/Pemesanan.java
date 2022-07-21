@@ -40,6 +40,9 @@ public class Pemesanan {
 
     @Column(name = "tgl_pemesanan")
     private LocalDate tanggalPesan;
+    @OneToOne
+    @JoinColumn(name = "id_pekerjaan", insertable = false, updatable = false)
+    private Pekerjaan pekerjaan;
 
     public Integer getNoAntrian() {
         return noAntrian;
@@ -121,4 +124,11 @@ public class Pemesanan {
         this.tanggalPesan = tanggalPesan;
     }
 
+    public Pekerjaan getPekerjaan() {
+        return pekerjaan;
+    }
+
+    public void setPekerjaan(Pekerjaan pekerjaan) {
+        this.pekerjaan = pekerjaan;
+    }
 }

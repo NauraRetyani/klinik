@@ -12,4 +12,5 @@ public interface KaryawanRepository extends JpaRepository<Karyawan, Long> {
 
     @Override
     Optional<Karyawan> findById(Long nik);
+
 }

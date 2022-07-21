@@ -14,6 +14,7 @@ public class PemesananDetailDto {
     private String namaIcdx;
     private String namaKaryawan;
     private String statusPelayanan;
+    private String pekerjaan;
 
     public Integer getNoAntrian() {
         return noAntrian;
@@ -53,5 +54,13 @@ public class PemesananDetailDto {
 
     public void setStatusPelayanan(String statusPelayanan) {
         this.statusPelayanan = statusPelayanan;
+    }
+
+    public String getPekerjaan() {
+        return pekerjaan;
+    }
+
+    public void setPekerjaan(String pekerjaan) {
+        this.pekerjaan = pekerjaan;
     }
 }

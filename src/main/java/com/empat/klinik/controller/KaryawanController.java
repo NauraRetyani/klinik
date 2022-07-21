@@ -2,14 +2,6 @@ package com.empat.klinik.controller;
 
 import com.empat.klinik.model.dto.DefaultResponse;
 import com.empat.klinik.model.dto.KaryawanDto;
-import com.empat.klinik.model.dto.PemesananDetailDto;
-import com.empat.klinik.model.dto.PemesananDto;
-import com.empat.klinik.model.entity.Karyawan;
-import com.empat.klinik.model.entity.Pemesanan;
-import com.empat.klinik.repository.IcdxRepository;
-import com.empat.klinik.repository.KaryawanRepository;
-import com.empat.klinik.repository.PasienRepository;
-import com.empat.klinik.repository.PemesananRepository;
 import com.empat.klinik.model.entity.Karyawan;
 import com.empat.klinik.repository.KaryawanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
