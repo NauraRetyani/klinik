@@ -5,6 +5,7 @@ import com.empat.klinik.model.dto.DefaultResponse;
 import com.empat.klinik.model.dto.PemesananDetailDto;
 import com.empat.klinik.model.dto.PemesananDto;
 //import com.empat.klinik.model.entity.Icdx;
+import com.empat.klinik.model.entity.Pasien;
 import com.empat.klinik.model.entity.Pemesanan;
 import com.empat.klinik.repository.IcdxRepository;
 import com.empat.klinik.repository.KaryawanRepository;
@@ -13,9 +14,11 @@ import com.empat.klinik.repository.PemesananRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Array;
 import java.time.LocalDate;
 import java.sql.Date.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,11 +36,20 @@ public class PemesananController {
     private IcdxRepository icdxRepository;
 
     //Tampilan muka fitur Pemesanan
-    @GetMapping("/tanggallayanan")
+
+    @GetMapping("/listpemesanan")
+    public ArrayList fitur(){
+        ArrayList fitur = new ArrayList();
+        for (int i = 0; i<2; i++){
+            fitur.add(0,"Tanggal Pelayanan " + getTanggalPelayanan());
+            fitur.add(1,getListPemesanan());
+            break;
+        }
+        return fitur;
+    }
     public LocalDate getTanggalPelayanan(){
         return java.time.LocalDate.now();
     }
-    @GetMapping("/listpemesanan")
     public List<PemesananDetailDto> getListPemesanan() {
         List<PemesananDetailDto> list = new ArrayList();
         for (Pemesanan i : pemesananRepository.findAll()) {
@@ -45,13 +57,16 @@ public class PemesananController {
         }
         return list;
     }
+
     public PemesananDetailDto convertEntityToDto(Pemesanan entity1) {
         Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasienAndKdIcdxAndNik(entity1.getIdPasien(), entity1.getKdIcdx(), entity1.getNik());
         PemesananDetailDto dto = new PemesananDetailDto();
         if (optionalPemesanan.isPresent()) {
             Pemesanan pemesanan1 = optionalPemesanan.get();
-            dto.setNoAntrian(pemesanan1.getIdPemesanan());
+            dto.setNoAntrian(pemesanan1.getNoAntrian());
             dto.setNama(pemesanan1.getPasien().getNama());
+            dto.setIdPasien(pemesanan1.getIdPasien());
+            dto.setPekerjaan(pemesanan1.getPekerjaan().getNamaJob());
             dto.setNamaIcdx(pemesanan1.getIcdx().getNamaIcdx());
             dto.setNamaKaryawan(pemesanan1.getKaryawan().getNamaKaryawan());
             dto.setStatusPelayanan(pemesanan1.getStatusPelayanan());
@@ -92,14 +107,19 @@ public class PemesananController {
             totalPemesanan = 0;
         }
         Integer noAntrian = totalPemesanan + 1;
+
+        Optional<Pasien> optionalPasien = pasienRepository.findById(pemesananDto.getIdPasien());
+        Pasien pasien = optionalPasien.get();
+
         Pemesanan pemesanan = new Pemesanan();
-//        pemesanan.setIdPemesanan(pemesanan.getIdPemesanan());
         pemesanan.setNoAntrian(noAntrian);
         pemesanan.setIdPasien(pemesananDto.getIdPasien());
         pemesanan.setKdIcdx(pemesananDto.getKdIcdx());
         pemesanan.setNik(pemesananDto.getNik());
-        pemesanan.setStatusPelayanan(pemesananDto.getStatusPelayanan());
+        pemesanan.setStatusPelayanan("0");
         pemesanan.setTanggalPesan(java.time.LocalDate.now());
+        pemesanan.setNama(pasien.getNama());
+        pemesanan.setIdPekerjaan(pasien.getIdJob());
 
         return pemesanan;
     }

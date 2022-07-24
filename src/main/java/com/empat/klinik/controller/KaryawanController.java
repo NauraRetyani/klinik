@@ -41,9 +41,7 @@ public class KaryawanController {
             dto.setTelp(karyawan1.getTelp());
             dto.setAlamat(karyawan1.getAlamat());
         }
-
         return dto;
-
     }
 
     //Sub fitur cek karyawan (Pencarian Karyawan Berdasarkan Nik)
@@ -88,7 +86,6 @@ public class KaryawanController {
         karyawan.setPassword(karyawanDto.getPassword());
         karyawan.setTelp(karyawanDto.getTelp());
         karyawan.setAlamat(karyawanDto.getAlamat());
-
         return karyawan;
     }
 
@@ -129,6 +126,5 @@ public class KaryawanController {
             df.setPesan("NIK Tidak Ditemukan");
         }
         return df;
-
     }
 }

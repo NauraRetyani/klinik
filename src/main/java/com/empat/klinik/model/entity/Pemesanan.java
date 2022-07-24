@@ -7,37 +7,49 @@ import java.time.LocalDate;
 @Table(name = "t_pemesanan")
 public class Pemesanan {
 
-    @Column (name = "no_antrian")
+    @Column(name = "no_antrian")
     private Integer noAntrian;
 
     @Id
-    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "pemesanan_generator")
-    @SequenceGenerator(name = "pemesanan_generator", sequenceName = "seq_pemesanan", initialValue = 1, allocationSize = 1 )
-    @Column (name = "id_pemesanan")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pemesanan_generator")
+    @SequenceGenerator(name = "pemesanan_generator", sequenceName = "seq_pemesanan", initialValue = 1, allocationSize = 1)
+    @Column(name = "id_pemesanan")
     private Integer idPemesanan;
 
     @Column(name = "id_pasien", length = 6)
     private Integer idPasien;
     @OneToOne
-    @JoinColumn(name ="id_pasien", insertable = false, updatable = false)
+    @JoinColumn(name = "id_pasien", insertable = false, updatable = false)
     private Pasien pasien;
     @Column(name = "id_penyakit")
     private String kdIcdx;
     @OneToOne
-    @JoinColumn(name ="id_penyakit", insertable = false, updatable = false)
+    @JoinColumn(name = "id_penyakit", insertable = false, updatable = false)
     private Icdx icdx;
 
     @Column(name = "nik_karyawan")
     private Long nik;
     @OneToOne
-    @JoinColumn(name ="nik_karyawan", insertable = false, updatable = false)
+    @JoinColumn(name = "nik_karyawan", insertable = false, updatable = false)
     private Karyawan karyawan;
 
-    @Column (name = "id_status_pelayanan")
+    @Column(name = "id_status_pelayanan")
     private String statusPelayanan;
 
     @Column(name = "tgl_pemesanan")
     private LocalDate tanggalPesan;
+
+    @Column(name = "id_pekerjaan")
+    private Integer idPekerjaan;
+
+    public Integer getIdPekerjaan() {
+        return idPekerjaan;
+    }
+
+    public void setIdPekerjaan(Integer idPekerjaan) {
+        this.idPekerjaan = idPekerjaan;
+    }
+
     @OneToOne
     @JoinColumn(name = "id_pekerjaan", insertable = false, updatable = false)
     private Pekerjaan pekerjaan;

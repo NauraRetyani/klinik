@@ -30,10 +30,13 @@ public class LaporanController {
 
     public PemesananDetailDto convertEntityToDto(Pemesanan entity) {
         PemesananDetailDto dto = new PemesananDetailDto();
-        dto.setNoAntrian(entity.getIdPemesanan());
+        dto.setNoAntrian(entity.getNoAntrian());
         dto.setIdPasien(entity.getIdPasien());
         dto.setNama(entity.getPasien().getNama());
         dto.setStatusPelayanan(entity.getStatusPelayanan());
+        dto.setPekerjaan(entity.getPekerjaan().getNamaJob());
+        dto.setNamaKaryawan(entity.getKaryawan().getNamaKaryawan());
+        dto.setNamaIcdx(entity.getIcdx().getNamaIcdx());
 
         return dto;
     }

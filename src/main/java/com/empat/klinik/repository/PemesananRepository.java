@@ -15,7 +15,7 @@ public interface PemesananRepository extends JpaRepository<Pemesanan, Integer> {
 
     //void deleteByIdPasien(String id_pasien);
 
-    Optional<Pemesanan> findByNoAntrian(Integer noAntrian);
+    //Optional<Pemesanan> findByNoAntrian(Integer noAntrian);
 
     //Optional<Pemesanan> deleteByIdPasien(String idPasien);
     //Optional<Pemesanan> findByNik(String nik);
@@ -27,4 +27,8 @@ public interface PemesananRepository extends JpaRepository<Pemesanan, Integer> {
 
     @Query(nativeQuery = true,value = "SELECT COUNT(*) FROM t_pemesanan WHERE tgl_pemesanan = CURRENT_DATE")
     Integer countPemesanan();
+
+    //Optional<Pemesanan> findByIdPemesanan(Integer idPemesanan);
+
+    Optional<Pemesanan> findByNoAntrian(Integer noAntrian);
 }
