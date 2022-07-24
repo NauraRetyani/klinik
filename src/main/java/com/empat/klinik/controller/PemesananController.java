@@ -74,26 +74,26 @@ public class PemesananController {
         Pemesanan pemesanan = convertDtoToEntity(pemesananDto);
         DefaultResponse<PemesananDto> df = new DefaultResponse<>();
         Optional<Pemesanan> optionalIdPasien = pemesananRepository.findByIdPasien(pemesananDto.getIdPasien());
-        if (optionalIdPasien.isPresent()) {
-            df.setStatus(Boolean.FALSE);
-            df.setPesan("Data gagal disimpan, No RM sudah terdaftar");
-        } else {
+//        if (optionalIdPasien.isPresent()) {
+//            df.setStatus(Boolean.FALSE);
+//            df.setPesan("Data gagal disimpan, No RM sudah terdaftar");
+//        } else {
             pemesananRepository.save(pemesanan);
             df.setStatus(Boolean.TRUE);
             df.setData(pemesananDto);
             df.setPesan("Data Berhasil Disimpan");
-        }
+//        }
         return df;
     }
 
     public Pemesanan convertDtoToEntity(PemesananDto pemesananDto) {
-        Integer totalPemesanan = pemesananRepository.countPemesanan();
+        Integer totalPemesanan = pemesananRepository.countPemesanan().intValue();
         if (totalPemesanan == null) {
             totalPemesanan = 0;
         }
         Integer noAntrian = totalPemesanan + 1;
         Pemesanan pemesanan = new Pemesanan();
-        pemesanan.setIdPemesanan(pemesanan.getIdPemesanan());
+//        pemesanan.setIdPemesanan(pemesanan.getIdPemesanan());
         pemesanan.setNoAntrian(noAntrian);
         pemesanan.setIdPasien(pemesananDto.getIdPasien());
         pemesanan.setKdIcdx(pemesananDto.getKdIcdx());

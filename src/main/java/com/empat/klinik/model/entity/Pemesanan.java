@@ -7,8 +7,6 @@ import java.time.LocalDate;
 @Table(name = "t_pemesanan")
 public class Pemesanan {
 
-    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "antrian_generator")
-    @SequenceGenerator(name = "antrian_generator",sequenceName = "seq_antrian", initialValue = 1, allocationSize = 1)
     @Column (name = "no_antrian")
     private Integer noAntrian;
 

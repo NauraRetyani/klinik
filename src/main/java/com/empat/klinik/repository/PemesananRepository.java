@@ -25,6 +25,6 @@ public interface PemesananRepository extends JpaRepository<Pemesanan, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM t_pemesanan WHERE id_status_pelayanan = '1'")
     List<Pemesanan> findStatusDone();
 
-    @Query(nativeQuery = true,value = "SELECT COUNT(id_pemesanan) FROM t_pemesanan WHERE tgl_pemesanan = CURRENT_DATE GROUP BY id_pemesanan ")
+    @Query(nativeQuery = true,value = "SELECT COUNT(*) FROM t_pemesanan WHERE tgl_pemesanan = CURRENT_DATE")
     Integer countPemesanan();
 }
