@@ -44,6 +44,9 @@ public class Pemesanan {
     @JoinColumn(name = "id_pekerjaan", insertable = false, updatable = false)
     private Pekerjaan pekerjaan;
 
+    @Column(name = "nama")
+    private String nama;
+
     public Integer getNoAntrian() {
         return noAntrian;
     }
@@ -130,5 +133,13 @@ public class Pemesanan {
 
     public void setPekerjaan(Pekerjaan pekerjaan) {
         this.pekerjaan = pekerjaan;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
     }
 }

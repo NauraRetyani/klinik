@@ -39,16 +39,12 @@ public class PemesananController {
     }
     @GetMapping("/listpemesanan")
     public List<PemesananDetailDto> getListPemesanan() {
-
         List<PemesananDetailDto> list = new ArrayList();
         for (Pemesanan i : pemesananRepository.findAll()) {
             list.add(convertEntityToDto(i));
         }
         return list;
     }
-
-
-
     public PemesananDetailDto convertEntityToDto(Pemesanan entity1) {
         Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasienAndKdIcdxAndNik(entity1.getIdPasien(), entity1.getKdIcdx(), entity1.getNik());
         PemesananDetailDto dto = new PemesananDetailDto();
@@ -91,9 +87,14 @@ public class PemesananController {
     }
 
     public Pemesanan convertDtoToEntity(PemesananDto pemesananDto) {
+        Integer totalPemesanan = pemesananRepository.countPemesanan();
+        if (totalPemesanan == null) {
+            totalPemesanan = 0;
+        }
+        Integer noAntrian = totalPemesanan + 1;
         Pemesanan pemesanan = new Pemesanan();
         pemesanan.setIdPemesanan(pemesanan.getIdPemesanan());
-        pemesanan.setNoAntrian(pemesanan.getIdPemesanan());
+        pemesanan.setNoAntrian(noAntrian);
         pemesanan.setIdPasien(pemesananDto.getIdPasien());
         pemesanan.setKdIcdx(pemesananDto.getKdIcdx());
         pemesanan.setNik(pemesananDto.getNik());

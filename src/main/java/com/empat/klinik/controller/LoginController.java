@@ -21,7 +21,6 @@ public class LoginController {
         DefaultResponse response = new DefaultResponse();
         Optional<Karyawan> optionalKaryawanUsername = karyawanRepository.findByUsername(loginDto.getUsername());
         Optional<Karyawan> optionalKaryawanPassword = karyawanRepository.findByPassword(loginDto.getPassword());
-
         if (optionalKaryawanUsername.isPresent()) {
             if (optionalKaryawanPassword.isPresent()) {
                 response.setStatus(Boolean.TRUE);

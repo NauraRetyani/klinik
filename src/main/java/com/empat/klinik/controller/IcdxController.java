@@ -86,10 +86,10 @@ public class IcdxController {
         return df;
     }
 
-    @PutMapping("/update/{kd_icdx}")
-    public DefaultResponse update(@PathVariable("kd_icdx") String kdIcdx, @RequestBody IcdxDto icdxDto) {
+    @PutMapping("/update/")
+    public DefaultResponse update(@RequestBody IcdxDto icdxDto) {
         DefaultResponse df = new DefaultResponse();
-        Optional<Icdx> optionalKdIcdx = icdxRepository.findById(kdIcdx);
+        Optional<Icdx> optionalKdIcdx = icdxRepository.findById(icdxDto.getKdIcdx());
         Icdx icdx = optionalKdIcdx.get();
         if (optionalKdIcdx.isPresent()) {
             icdx.setNamaIcdx(icdxDto.getNamaIcdx());

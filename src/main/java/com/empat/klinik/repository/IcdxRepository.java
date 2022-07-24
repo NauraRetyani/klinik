@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IcdxRepository extends JpaRepository<Icdx, String>{
-    Optional<Icdx> findByKdIcdx(String kdIcdx);
+    Optional<Icdx> findById(String kdIcdx);
     Optional<Icdx> deleteByKdIcdx(String kdIcdx);
     @Query(value = "SELECT * FROM t_icdx WHERE kd_icdx LIKE %?1", nativeQuery = true)
-    Collection<Icdx> search(String search);
+    List<Icdx> search(String search);
 }

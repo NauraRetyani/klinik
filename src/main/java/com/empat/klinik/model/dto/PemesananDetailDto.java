@@ -11,6 +11,7 @@ public class PemesananDetailDto {
     @SequenceGenerator(name = "antrian_generator", sequenceName = "seq_antrian", initialValue = 1, allocationSize = 1)
     private Integer noAntrian;
     private String nama;
+    private Integer idPasien;
     private String namaIcdx;
     private String namaKaryawan;
     private String statusPelayanan;
@@ -30,6 +31,14 @@ public class PemesananDetailDto {
 
     public void setNama(String nama) {
         this.nama = nama;
+    }
+
+    public Integer getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(Integer idPasien) {
+        this.idPasien = idPasien;
     }
 
     public String getNamaIcdx() {
