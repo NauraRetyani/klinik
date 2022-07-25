@@ -1,10 +1,8 @@
 package com.empat.klinik.controller;
 
 import com.empat.klinik.model.dto.DefaultResponse;
-import com.empat.klinik.model.dto.KaryawanDto;
 import com.empat.klinik.model.dto.PasienDto;
 import com.empat.klinik.model.dto.PekerjaanDto;
-import com.empat.klinik.model.entity.Karyawan;
 import com.empat.klinik.model.entity.Pasien;
 import com.empat.klinik.repository.PasienRepository;
 import com.empat.klinik.repository.PekerjaanRepository;
