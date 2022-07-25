@@ -1,8 +1,10 @@
 package com.empat.klinik.controller;
 
 import com.empat.klinik.model.dto.DefaultResponse;
+import com.empat.klinik.model.dto.KaryawanDto;
 import com.empat.klinik.model.dto.PasienDto;
 import com.empat.klinik.model.dto.PekerjaanDto;
+import com.empat.klinik.model.entity.Karyawan;
 import com.empat.klinik.model.entity.Pasien;
 import com.empat.klinik.repository.PasienRepository;
 import com.empat.klinik.repository.PekerjaanRepository;
@@ -89,7 +91,6 @@ public class PasienController {
 
     public Pasien convertDtoToEntity(PasienDto pasienDto) {
         Pasien pasien = new Pasien();
-
         pasien.setIdPasien(pasienDto.getIdPasien());
         pasien.setNama(pasienDto.getNama());
         pasien.setGender(pasienDto.getGender());
@@ -99,6 +100,30 @@ public class PasienController {
         pasien.setIdJob(pasienDto.getIdJob());
 
         return pasien;
+    }
+
+    @PutMapping("/update/{idPasien}")
+    public DefaultResponse update(@PathVariable Integer idPasien, @RequestBody PasienDto pasienDto) {
+        DefaultResponse df = new DefaultResponse();
+        Optional<Pasien> optionalPasien = pasienRepository.findById(idPasien);
+        Pasien pasien = optionalPasien.get();
+        if (optionalPasien.isPresent()) {
+            pasien.setIdPasien(pasienDto.getIdPasien());
+            pasien.setNama(pasienDto.getNama());
+            pasien.setGender(pasienDto.getGender());
+            pasien.setBday(pasienDto.getBday());
+            pasien.setGolDar(pasienDto.getGolDar());
+            pasien.setAlamat(pasienDto.getAlamat());
+            pasien.setIdJob(pasienDto.getIdJob());
+            pasienRepository.save(pasien);
+            df.setStatus(Boolean.TRUE);
+            df.setData(pasienDto);
+            df.setPesan("Data Perubahan Berhasil Disimpan");
+        } else {
+            df.setStatus(Boolean.FALSE);
+            df.setPesan("ID Pasien Tidak Ditemukan");
+        }
+        return df;
     }
 }
 
