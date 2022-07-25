@@ -46,7 +46,7 @@ public class PekerjaanController {
         Optional<Pekerjaan> optionalJob = pekerjaanRepository.findById(jobDto.getIdJob());
         if (optionalJob.isPresent()) {
             df.setStatus(Boolean.FALSE);
-            df.setPesan("Data gagal disimpan, No RM sudah terdaftar");
+            df.setPesan("Data gagal disimpan, id sudah terdaftar");
         } else {
             pekerjaanRepository.save(pekerjaan);
             df.setStatus(Boolean.TRUE);
