@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface IcdxRepository extends JpaRepository<Icdx, String>{
     Optional<Icdx> findById(String kdIcdx);
     Optional<Icdx> deleteByKdIcdx(String kdIcdx);
-    @Query(value = "SELECT * FROM t_icdx WHERE kd_icdx LIKE %?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM t_icdx WHERE kd_icdx LIKE %?1% OR nama_icdx LIKE %?1%", nativeQuery = true)
     List<Icdx> search(String search);
 }
