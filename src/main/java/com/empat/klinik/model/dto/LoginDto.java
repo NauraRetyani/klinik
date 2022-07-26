@@ -3,6 +3,7 @@ package com.empat.klinik.model.dto;
 public class LoginDto {
     private String username;
     private String password;
+    private String confirmPassword;
 
     public String getUsername() {
         return username;
@@ -18,5 +19,13 @@ public class LoginDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

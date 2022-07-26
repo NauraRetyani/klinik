@@ -17,7 +17,7 @@ public class Pemesanan {
     @Column(name = "id_pemesanan")
     private Integer idPemesanan;
 
-    @Column(name = "id_pasien", length = 6)
+    @Column(name = "id_pasien")
     private Integer idPasien;
     @OneToOne
     @JoinColumn(name = "id_pasien", insertable = false, updatable = false)
