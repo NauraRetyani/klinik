@@ -5,6 +5,7 @@ import com.empat.klinik.model.entity.Pemesanan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,15 @@ public interface PemesananRepository extends JpaRepository<Pemesanan, Integer> {
     @Query(nativeQuery = true,value = "SELECT COUNT(*) FROM t_pemesanan WHERE tgl_pemesanan = CURRENT_DATE")
     Integer countPemesanan();
 
+    @Query(nativeQuery = true, value = "SELECT * FROM t_pemesanan WHERE tgl_pemesanan = CURRENT_DATE")
+    List<Pemesanan> findByTanggalPesan();
+
     //Optional<Pemesanan> findByIdPemesanan(Integer idPemesanan);
 
     Optional<Pemesanan> findByNoAntrian(Integer noAntrian);
+
+    Optional<Pemesanan> findByNoAntrianAndTanggalPesan(Integer noAntrian, LocalDate now);
+
+    Optional<Pemesanan> findByIdPasienAndTanggalPesan(Integer idPasien, LocalDate now);
+    //Optional<Pemesanan> findByTanggalPesan(LocalDate tanggalPesan);
 }

@@ -14,11 +14,8 @@ import com.empat.klinik.repository.PemesananRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Array;
 import java.time.LocalDate;
-import java.sql.Date.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,21 +35,24 @@ public class PemesananController {
     //Tampilan muka fitur Pemesanan
 
     @GetMapping("/listpemesanan")
-    public ArrayList fitur(){
+    public ArrayList fitur() {
         ArrayList fitur = new ArrayList();
-        for (int i = 0; i<2; i++){
-            fitur.add(0,"Tanggal Pelayanan " + getTanggalPelayanan());
-            fitur.add(1,getListPemesanan());
+        int i = 0;
+        while (i < 2) {
+            fitur.add(0, "Tanggal Pelayanan " + getTanggalPelayanan());
+            fitur.add(1, getListPemesanan());
             break;
         }
         return fitur;
     }
-    public LocalDate getTanggalPelayanan(){
+
+    public LocalDate getTanggalPelayanan() {
         return java.time.LocalDate.now();
     }
+
     public List<PemesananDetailDto> getListPemesanan() {
         List<PemesananDetailDto> list = new ArrayList();
-        for (Pemesanan i : pemesananRepository.findAll()) {
+        for (Pemesanan i : pemesananRepository.findByTanggalPesan()) {
             list.add(convertEntityToDto(i));
         }
         return list;
@@ -70,11 +70,11 @@ public class PemesananController {
             dto.setNamaIcdx(pemesanan1.getIcdx().getNamaIcdx());
             dto.setNamaKaryawan(pemesanan1.getKaryawan().getNamaKaryawan());
             dto.setStatusPelayanan(pemesanan1.getStatusPelayanan());
-            if((pemesanan1.getStatusPelayanan()).equals("0")){
+            if ((pemesanan1.getStatusPelayanan()).equals("0")) {
                 dto.setStatusPelayanan("Belum Dilayani");
-            }else if((pemesanan1.getStatusPelayanan()).equals("1")){
+            } else if ((pemesanan1.getStatusPelayanan()).equals("1")) {
                 dto.setStatusPelayanan("Sudah Dilayani");
-            }else{
+            } else {
                 dto.setStatusPelayanan("Kode Status Tidak Valid");
             }
         }
@@ -88,16 +88,24 @@ public class PemesananController {
     public DefaultResponse<PemesananDto> savePemesanan(@RequestBody PemesananDto pemesananDto) {
         Pemesanan pemesanan = convertDtoToEntity(pemesananDto);
         DefaultResponse<PemesananDto> df = new DefaultResponse<>();
-        Optional<Pemesanan> optionalIdPasien = pemesananRepository.findByIdPasien(pemesananDto.getIdPasien());
-//        if (optionalIdPasien.isPresent()) {
-//            df.setStatus(Boolean.FALSE);
-//            df.setPesan("Data gagal disimpan, No RM sudah terdaftar");
-//        } else {
-            pemesananRepository.save(pemesanan);
-            df.setStatus(Boolean.TRUE);
-            df.setData(pemesananDto);
-            df.setPesan("Data Berhasil Disimpan");
-//        }
+        try {
+            Optional<Pemesanan> optionalIdPasien = pemesananRepository.findByIdPasien(pemesananDto.getIdPasien());
+            if (optionalIdPasien.isPresent() || !(optionalIdPasien.isPresent())) {
+                pemesananRepository.save(pemesanan);
+                df.setStatus(Boolean.TRUE);
+                df.setData(pemesananDto);
+                df.setPesan("Data Berhasil Disimpan");
+            }
+        } catch (Exception e) {
+            if (pemesanan.getTanggalPesan().equals(java.time.LocalDate.now())) {
+                df.setStatus(Boolean.FALSE);
+                df.setPesan("Data gagal disimpan, No RM sudah terdaftar hari ini");
+            } else {
+                df.setStatus(Boolean.FALSE);
+                df.setPesan("Data gagal disimpan, Tidak boleh melakukan Booking pemesanan untuk lain hari ");
+            }
+
+        }
         return df;
     }
 
@@ -117,7 +125,15 @@ public class PemesananController {
         pemesanan.setKdIcdx(pemesananDto.getKdIcdx());
         pemesanan.setNik(pemesananDto.getNik());
         pemesanan.setStatusPelayanan("0");
-        pemesanan.setTanggalPesan(java.time.LocalDate.now());
+        pemesanan.setTanggalPesan(pemesananDto.getTanggalPesan());
+        try{
+            if (pemesananDto.getTanggalPesan().equals("") || pemesananDto.getTanggalPesan().equals(java.time.LocalDate.now())) {
+            } else {
+                pemesanan.setTanggalPesan(pemesananDto.getTanggalPesan());
+            }
+        }catch(Exception e){
+            pemesanan.setTanggalPesan(java.time.LocalDate.now());
+        }
         pemesanan.setNama(pasien.getNama());
         pemesanan.setIdPekerjaan(pasien.getIdJob());
 
@@ -128,7 +144,7 @@ public class PemesananController {
     @DeleteMapping("/delete/{idPasien}")
     public DefaultResponse deletById(@PathVariable Integer idPasien) {
         DefaultResponse df = new DefaultResponse();
-        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasien(idPasien);
+        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasienAndTanggalPesan(idPasien,LocalDate.now());
         if (optionalPemesanan.isPresent()) {
             pemesananRepository.delete(optionalPemesanan.get());
             df.setStatus(Boolean.TRUE);
@@ -144,10 +160,9 @@ public class PemesananController {
     @PutMapping("/update/{noAntrian}")
     public DefaultResponse update(@PathVariable Integer noAntrian, @RequestBody PemesananDto pemesananDto) {
         DefaultResponse df = new DefaultResponse();
-        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByNoAntrian(noAntrian);
+        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByNoAntrianAndTanggalPesan(noAntrian,LocalDate.now());
         Pemesanan pemesanan = optionalPemesanan.get();
         if (optionalPemesanan.isPresent()) {
-            //pemesanan.setNoAntrian(pemesananDto.getNoAntrian());
             pemesanan.setStatusPelayanan(pemesananDto.getStatusPelayanan());
             pemesananRepository.save(pemesanan);
             df.setStatus(Boolean.TRUE);

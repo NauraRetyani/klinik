@@ -2,6 +2,7 @@ package com.empat.klinik.model.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "t_pemesanan")
@@ -33,7 +34,7 @@ public class Pemesanan {
     @JoinColumn(name = "nik_karyawan", insertable = false, updatable = false)
     private Karyawan karyawan;
 
-    @Column(name = "id_status_pelayanan")
+    @Column(name = "id_status_pelayanan", length = 1)
     private String statusPelayanan;
 
     @Column(name = "tgl_pemesanan")
@@ -41,14 +42,6 @@ public class Pemesanan {
 
     @Column(name = "id_pekerjaan")
     private Integer idPekerjaan;
-
-    public Integer getIdPekerjaan() {
-        return idPekerjaan;
-    }
-
-    public void setIdPekerjaan(Integer idPekerjaan) {
-        this.idPekerjaan = idPekerjaan;
-    }
 
     @OneToOne
     @JoinColumn(name = "id_pekerjaan", insertable = false, updatable = false)
@@ -151,5 +144,13 @@ public class Pemesanan {
 
     public void setNama(String nama) {
         this.nama = nama;
+    }
+
+    public Integer getIdPekerjaan() {
+        return idPekerjaan;
+    }
+
+    public void setIdPekerjaan(Integer idPekerjaan) {
+        this.idPekerjaan = idPekerjaan;
     }
 }

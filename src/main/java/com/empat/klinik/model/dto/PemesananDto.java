@@ -1,5 +1,8 @@
 package com.empat.klinik.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 public class PemesananDto {
@@ -8,9 +11,9 @@ public class PemesananDto {
     private Integer idPasien;
     private String kdIcdx;
     private Long nik;
-    //private String idKaryawan;
     private String statusPelayanan;
-    private Date tanggalPesan;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate tanggalPesan;
 
     public Integer getNoAntrian() {
         return noAntrian;
@@ -60,11 +63,12 @@ public class PemesananDto {
         this.statusPelayanan = statusPelayanan;
     }
 
-    public Date getTanggalPesan() {
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    public LocalDate getTanggalPesan() {
         return tanggalPesan;
     }
 
-    public void setTanggalPesan(Date tanggalPesan) {
+    public void setTanggalPesan(LocalDate tanggalPesan) {
         this.tanggalPesan = tanggalPesan;
     }
 
