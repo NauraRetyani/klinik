@@ -38,11 +38,19 @@ public class PemesananController {
     public ArrayList fitur() {
         ArrayList fitur = new ArrayList();
         int i = 0;
-        while (i < 2) {
+        while (i == 0) {
             fitur.add(0, "Tanggal Pelayanan " + getTanggalPelayanan());
-            fitur.add(1, getListPemesanan());
-            break;
+            try {
+                fitur.add(1, getListPemesanan());
+                break;
+            } catch (Exception e) {
+                fitur.add(1, "Tidak Bisa Menampilkan List " +
+                        "Terdapat Riwayat nilai Unique yang pernah terekam di hari " +
+                        "yang sama");
+                break;
+            }
         }
+
         return fitur;
     }
 
@@ -50,6 +58,7 @@ public class PemesananController {
         return java.time.LocalDate.now();
     }
 
+    @GetMapping("/listpesan")
     public List<PemesananDetailDto> getListPemesanan() {
         List<PemesananDetailDto> list = new ArrayList();
         for (Pemesanan i : pemesananRepository.findByTanggalPesan()) {
@@ -90,11 +99,24 @@ public class PemesananController {
         DefaultResponse<PemesananDto> df = new DefaultResponse<>();
         try {
             Optional<Pemesanan> optionalIdPasien = pemesananRepository.findByIdPasien(pemesananDto.getIdPasien());
-            if (optionalIdPasien.isPresent() || !(optionalIdPasien.isPresent())) {
-                pemesananRepository.save(pemesanan);
-                df.setStatus(Boolean.TRUE);
-                df.setData(pemesananDto);
-                df.setPesan("Data Berhasil Disimpan");
+            if (!(optionalIdPasien.isPresent())) {
+                if (!(pemesanan.getTanggalPesan().equals(java.time.LocalDate.now()))) {
+                    df.setStatus(Boolean.FALSE);
+                    df.setPesan("Data gagal disimpan, Tidak boleh melakukan Booking pemesanan untuk lain hari ");
+                } else {
+                    pemesananRepository.save(pemesanan);
+                    df.setStatus(Boolean.TRUE);
+                    df.setData(pemesananDto);
+                    df.setPesan("Data Berhasil Disimpan");
+                }
+            } else {
+                if (pemesanan.getTanggalPesan().equals(java.time.LocalDate.now())) {
+                    df.setStatus(Boolean.FALSE);
+                    df.setPesan("Data gagal disimpan, No RM sudah terdaftar hari ini");
+                } else {
+                    df.setStatus(Boolean.FALSE);
+                    df.setPesan("Data gagal disimpan, Tidak boleh melakukan Booking pemesanan untuk lain hari ");
+                }
             }
         } catch (Exception e) {
             if (pemesanan.getTanggalPesan().equals(java.time.LocalDate.now())) {
@@ -115,10 +137,8 @@ public class PemesananController {
             totalPemesanan = 0;
         }
         Integer noAntrian = totalPemesanan + 1;
-
         Optional<Pasien> optionalPasien = pasienRepository.findById(pemesananDto.getIdPasien());
         Pasien pasien = optionalPasien.get();
-
         Pemesanan pemesanan = new Pemesanan();
         pemesanan.setNoAntrian(noAntrian);
         pemesanan.setIdPasien(pemesananDto.getIdPasien());
@@ -126,12 +146,12 @@ public class PemesananController {
         pemesanan.setNik(pemesananDto.getNik());
         pemesanan.setStatusPelayanan("0");
         pemesanan.setTanggalPesan(pemesananDto.getTanggalPesan());
-        try{
+        try {
             if (pemesananDto.getTanggalPesan().equals("") || pemesananDto.getTanggalPesan().equals(java.time.LocalDate.now())) {
             } else {
                 pemesanan.setTanggalPesan(pemesananDto.getTanggalPesan());
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             pemesanan.setTanggalPesan(java.time.LocalDate.now());
         }
         pemesanan.setNama(pasien.getNama());
@@ -144,7 +164,7 @@ public class PemesananController {
     @DeleteMapping("/delete/{idPasien}")
     public DefaultResponse deletById(@PathVariable Integer idPasien) {
         DefaultResponse df = new DefaultResponse();
-        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasienAndTanggalPesan(idPasien,LocalDate.now());
+        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasienAndTanggalPesan(idPasien, LocalDate.now());
         if (optionalPemesanan.isPresent()) {
             pemesananRepository.delete(optionalPemesanan.get());
             df.setStatus(Boolean.TRUE);
@@ -160,7 +180,7 @@ public class PemesananController {
     @PutMapping("/update/{noAntrian}")
     public DefaultResponse update(@PathVariable Integer noAntrian, @RequestBody PemesananDto pemesananDto) {
         DefaultResponse df = new DefaultResponse();
-        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByNoAntrianAndTanggalPesan(noAntrian,LocalDate.now());
+        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByNoAntrianAndTanggalPesan(noAntrian, LocalDate.now());
         Pemesanan pemesanan = optionalPemesanan.get();
         if (optionalPemesanan.isPresent()) {
             pemesanan.setStatusPelayanan(pemesananDto.getStatusPelayanan());
@@ -173,5 +193,16 @@ public class PemesananController {
             df.setPesan("No Antrian Tidak Ditemukan");
         }
         return df;
+    }
+
+    //Subfitur Search Still error
+    @GetMapping("/search/{search}")
+    public List<PemesananDetailDto> cari(@PathVariable String search) {
+        //DefaultResponse df = new DefaultResponse();
+        List<PemesananDetailDto> searchPemesanan = new ArrayList();
+        for(Pemesanan pemesanan: pemesananRepository.search(search,LocalDate.now())){
+            searchPemesanan.add(convertEntityToDto(pemesanan));
+        }
+        return searchPemesanan;
     }
 }

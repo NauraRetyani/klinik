@@ -26,10 +26,13 @@ public interface PemesananRepository extends JpaRepository<Pemesanan, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM t_pemesanan WHERE id_status_pelayanan = '1'")
     List<Pemesanan> findStatusDone();
 
+    @Query(nativeQuery = true, value = "SELECT * FROM t_pemesanan WHERE id_status_pelayanan = '0'")
+    List<Pemesanan> getListPemesanan();
+
     @Query(nativeQuery = true,value = "SELECT COUNT(*) FROM t_pemesanan WHERE tgl_pemesanan = CURRENT_DATE")
     Integer countPemesanan();
 
-    @Query(nativeQuery = true, value = "SELECT * FROM t_pemesanan WHERE tgl_pemesanan = CURRENT_DATE")
+    @Query(nativeQuery = true, value = "SELECT DISTINCT * FROM t_pemesanan WHERE tgl_pemesanan = CURRENT_DATE AND id_pasien > 0 ")
     List<Pemesanan> findByTanggalPesan();
 
     //Optional<Pemesanan> findByIdPemesanan(Integer idPemesanan);
@@ -39,5 +42,10 @@ public interface PemesananRepository extends JpaRepository<Pemesanan, Integer> {
     Optional<Pemesanan> findByNoAntrianAndTanggalPesan(Integer noAntrian, LocalDate now);
 
     Optional<Pemesanan> findByIdPasienAndTanggalPesan(Integer idPasien, LocalDate now);
-    //Optional<Pemesanan> findByTanggalPesan(LocalDate tanggalPesan);
+
+
+  /*  Optional<Pemesanan> findByIdPasienOrNamaAndTanggalPesan(Integer idPasien, String nama, LocalDate now);
+    //Optional<Pemesanan> findByTanggalPesan(LocalDate tanggalPesan);*/
+    @Query(nativeQuery = true, value = "SELECT * FROM t_pemesanan WHERE nama LIKE ?%")
+    List<Pemesanan> search(String search, LocalDate now);
 }
