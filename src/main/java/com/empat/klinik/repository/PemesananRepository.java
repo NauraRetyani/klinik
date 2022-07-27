@@ -1,5 +1,6 @@
 package com.empat.klinik.repository;
 
+import com.empat.klinik.model.dto.projection.Laporan;
 import com.empat.klinik.model.entity.Icdx;
 import com.empat.klinik.model.entity.Pemesanan;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,6 +26,9 @@ public interface PemesananRepository extends JpaRepository<Pemesanan, Integer> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM t_pemesanan WHERE id_status_pelayanan = '1'")
     List<Pemesanan> findStatusDone();
+
+    @Query(nativeQuery = true, value = "SELECT no_antrian as noAntrian, nama as namaPasien FROM t_pemesanan WHERE id_status_pelayanan = '1'")
+    List<Laporan> laporan();
 
     @Query(nativeQuery = true, value = "SELECT * FROM t_pemesanan WHERE id_status_pelayanan = '0'")
     List<Pemesanan> getListPemesanan();

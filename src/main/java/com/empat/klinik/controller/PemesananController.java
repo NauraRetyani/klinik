@@ -5,6 +5,8 @@ import com.empat.klinik.model.dto.DefaultResponse;
 import com.empat.klinik.model.dto.PemesananDetailDto;
 import com.empat.klinik.model.dto.PemesananDto;
 //import com.empat.klinik.model.entity.Icdx;
+import com.empat.klinik.model.dto.projection.GetNextAntrian;
+import com.empat.klinik.model.dto.projection.Laporan;
 import com.empat.klinik.model.entity.Pasien;
 import com.empat.klinik.model.entity.Pemesanan;
 import com.empat.klinik.repository.IcdxRepository;
@@ -204,5 +206,11 @@ public class PemesananController {
             searchPemesanan.add(convertEntityToDto(pemesanan));
         }
         return searchPemesanan;
+    }
+
+    @GetMapping("/laporanprojection")
+    public List<Laporan> nextNoAntrian() {
+        List<Laporan> list = pemesananRepository.laporan();
+        return list;
     }
 }
