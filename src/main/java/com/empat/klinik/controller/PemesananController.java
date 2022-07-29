@@ -60,7 +60,6 @@ public class PemesananController {
         return java.time.LocalDate.now();
     }
 
-    @GetMapping("/listpesan")
     public List<PemesananDetailDto> getListPemesanan() {
         List<PemesananDetailDto> list = new ArrayList();
         for (Pemesanan i : pemesananRepository.findByTanggalPesan()) {
@@ -70,26 +69,35 @@ public class PemesananController {
     }
 
     public PemesananDetailDto convertEntityToDto(Pemesanan entity1) {
-        Optional<Pemesanan> optionalPemesanan = pemesananRepository.findByIdPasienAndKdIcdxAndNik(entity1.getIdPasien(), entity1.getKdIcdx(), entity1.getNik());
         PemesananDetailDto dto = new PemesananDetailDto();
-        if (optionalPemesanan.isPresent()) {
-            Pemesanan pemesanan1 = optionalPemesanan.get();
-            dto.setNoAntrian(pemesanan1.getNoAntrian());
-            dto.setNama(pemesanan1.getPasien().getNama());
-            dto.setIdPasien(pemesanan1.getIdPasien());
-            dto.setPekerjaan(pemesanan1.getPekerjaan().getNamaJob());
-            dto.setNamaIcdx(pemesanan1.getIcdx().getNamaIcdx());
-            dto.setNamaKaryawan(pemesanan1.getKaryawan().getNamaKaryawan());
-            dto.setStatusPelayanan(pemesanan1.getStatusPelayanan());
-            if ((pemesanan1.getStatusPelayanan()).equals("0")) {
+        dto.setNoAntrian(entity1.getNoAntrian());
+        dto.setNama(entity1.getNama());
+        dto.setIdPasien(entity1.getIdPasien());
+        if(pemesananRepository.existsById(entity1.getIdPasien())){
+            dto.setPekerjaan(entity1.getPekerjaan().getNamaJob());
+            dto.setNamaIcdx(entity1.getIcdx().getNamaIcdx());
+            dto.setNamaKaryawan(entity1.getKaryawan().getNamaKaryawan());
+            dto.setStatusPelayanan(entity1.getStatusPelayanan());
+            if ((entity1.getStatusPelayanan()).equals("0")) {
                 dto.setStatusPelayanan("Belum Dilayani");
-            } else if ((pemesanan1.getStatusPelayanan()).equals("1")) {
+            } else if ((entity1.getStatusPelayanan()).equals("1")) {
+                dto.setStatusPelayanan("Sudah Dilayani");
+            } else {
+                dto.setStatusPelayanan("Kode Status Tidak Valid");
+            }
+        }else if(!(pemesananRepository.existsById(entity1.getIdPasien()))){
+            dto.setPekerjaan(entity1.getPekerjaan().getNamaJob());
+            dto.setNamaIcdx(entity1.getIcdx().getNamaIcdx());
+            dto.setNamaKaryawan(entity1.getKaryawan().getNamaKaryawan());
+            dto.setStatusPelayanan(entity1.getStatusPelayanan());
+            if ((entity1.getStatusPelayanan()).equals("0")) {
+                dto.setStatusPelayanan("Belum Dilayani");
+            } else if ((entity1.getStatusPelayanan()).equals("1")) {
                 dto.setStatusPelayanan("Sudah Dilayani");
             } else {
                 dto.setStatusPelayanan("Kode Status Tidak Valid");
             }
         }
-
         return dto;
 
     }
@@ -101,21 +109,40 @@ public class PemesananController {
         DefaultResponse<PemesananDto> df = new DefaultResponse<>();
         try {
             Optional<Pemesanan> optionalIdPasien = pemesananRepository.findByIdPasien(pemesananDto.getIdPasien());
+            //Save data jika pasien baru pertama kali berobat/melakukan pemesanan
             if (!(optionalIdPasien.isPresent())) {
+                //Memeriksa bahwa pemesanan hanya untuk di hari tersebut!!!
                 if (!(pemesanan.getTanggalPesan().equals(java.time.LocalDate.now()))) {
                     df.setStatus(Boolean.FALSE);
-                    df.setPesan("Data gagal disimpan, Tidak boleh melakukan Booking pemesanan untuk lain hari ");
+                    df.setPesan("Data gagal disimpan, Tidak boleh melakukan Booking/Pemesanan untuk lain hari ");
                 } else {
                     pemesananRepository.save(pemesanan);
                     df.setStatus(Boolean.TRUE);
                     df.setData(pemesananDto);
                     df.setPesan("Data Berhasil Disimpan");
                 }
-            } else {
+            }
+            //Save data jika pasien sudah lebih dari satu kali berobat/melakukan pemesanan
+            else {
+                //Memastikan bahwa pemesanan hanya untuk di hari tersebut!!!
                 if (pemesanan.getTanggalPesan().equals(java.time.LocalDate.now())) {
-                    df.setStatus(Boolean.FALSE);
-                    df.setPesan("Data gagal disimpan, No RM sudah terdaftar hari ini");
-                } else {
+                    //Memastikan tidak ada duplikat data!!!
+                    Optional<Pemesanan> opTionalIdPasienAndTanggal = pemesananRepository.findByIdPasienAndTanggalPesan(pemesananDto.getIdPasien(), LocalDate.now());
+                    if (opTionalIdPasienAndTanggal.isPresent()) {
+                        df.setStatus(Boolean.FALSE);
+                        df.setPesan("Data gagal disimpan, No RM sudah terdaftar hari ini");
+                    }
+                    //Memastikan data tersebut akan tersimpan jika tidak ditemukan duplikasi data!!!
+                    else {
+                        df.setStatus(Boolean.TRUE);
+                        pemesananRepository.save(pemesanan);
+                        df.setStatus(Boolean.TRUE);
+                        df.setData(pemesananDto);
+                        df.setPesan("Data Berhasil Disimpan");
+                    }
+                }
+                //Memastikan bahwa data pasien tidak akan tersimpan jika selain untuk hari ini!!!
+                else {
                     df.setStatus(Boolean.FALSE);
                     df.setPesan("Data gagal disimpan, Tidak boleh melakukan Booking pemesanan untuk lain hari ");
                 }
@@ -202,7 +229,7 @@ public class PemesananController {
     public List<PemesananDetailDto> cari(@PathVariable String search) {
         //DefaultResponse df = new DefaultResponse();
         List<PemesananDetailDto> searchPemesanan = new ArrayList();
-        for(Pemesanan pemesanan: pemesananRepository.search(search,LocalDate.now())){
+        for (Pemesanan pemesanan : pemesananRepository.search(search, LocalDate.now())) {
             searchPemesanan.add(convertEntityToDto(pemesanan));
         }
         return searchPemesanan;
