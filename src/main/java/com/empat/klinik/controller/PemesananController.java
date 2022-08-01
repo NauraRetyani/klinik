@@ -148,10 +148,25 @@ public class PemesananController {
                 }
             }
         } catch (Exception e) {
+            //Memastikan bahwa pemesanan hanya untuk di hari tersebut!!!
             if (pemesanan.getTanggalPesan().equals(java.time.LocalDate.now())) {
-                df.setStatus(Boolean.FALSE);
-                df.setPesan("Data gagal disimpan, No RM sudah terdaftar hari ini");
-            } else {
+                //Memastikan tidak ada duplikat data!!!
+                Optional<Pemesanan> opTionalIdPasienAndTanggal = pemesananRepository.findByIdPasienAndTanggalPesan(pemesananDto.getIdPasien(), LocalDate.now());
+                if (opTionalIdPasienAndTanggal.isPresent()) {
+                    df.setStatus(Boolean.FALSE);
+                    df.setPesan("Data gagal disimpan, No RM sudah terdaftar hari ini");
+                }
+                //Memastikan data tersebut akan tersimpan jika tidak ditemukan duplikasi data!!!
+                else {
+                    df.setStatus(Boolean.TRUE);
+                    pemesananRepository.save(pemesanan);
+                    df.setStatus(Boolean.TRUE);
+                    df.setData(pemesananDto);
+                    df.setPesan("Data Berhasil Disimpan");
+                }
+            }
+            //Memastikan bahwa data pasien tidak akan tersimpan jika selain untuk hari ini!!!
+            else {
                 df.setStatus(Boolean.FALSE);
                 df.setPesan("Data gagal disimpan, Tidak boleh melakukan Booking pemesanan untuk lain hari ");
             }

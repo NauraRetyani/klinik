@@ -15,15 +15,6 @@ public interface PemesananRepository extends JpaRepository<Pemesanan, Integer> {
     Optional<Pemesanan> findByIdPasien(Integer idPasien);
     Optional<Pemesanan> findByKdIcdx(String kdIcdx);
 
-    //void deleteByIdPasien(String id_pasien);
-
-    //Optional<Pemesanan> findByNoAntrian(Integer noAntrian);
-
-    //Optional<Pemesanan> deleteByIdPasien(String idPasien);
-    //Optional<Pemesanan> findByNik(String nik);
-
-    //Pemesanan[] findAll();
-
     @Query(nativeQuery = true, value = "SELECT * FROM t_pemesanan WHERE id_status_pelayanan = '1'")
     List<Pemesanan> findStatusDone();
 
@@ -50,6 +41,6 @@ public interface PemesananRepository extends JpaRepository<Pemesanan, Integer> {
 
   /*  Optional<Pemesanan> findByIdPasienOrNamaAndTanggalPesan(Integer idPasien, String nama, LocalDate now);
     //Optional<Pemesanan> findByTanggalPesan(LocalDate tanggalPesan);*/
-    @Query(nativeQuery = true, value = "SELECT * FROM t_pemesanan WHERE nama LIKE ?%")
+    @Query(nativeQuery = true, value = "SELECT * FROM t_pemesanan WHERE nama LIKE ?% AND tgl_pemesanan = CURRENT_DATE")
     List<Pemesanan> search(String search, LocalDate now);
 }
